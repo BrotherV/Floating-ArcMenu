@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:arc="http://schemas.android.com/apk/res-auto"
+                                                 android:layout_width="fill_parent"
+                                                 android:layout_height="fill_parent">
+
+
+    <com.bvapp.arcmenulibrary.ArcMenu
+        android:id="@+id/arcMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        arc:menuType="normal"
+        arc:menuChildSize="48dp"
+        arc:menuGravity="Bottom_Right"
+        arc:menuClickAnim="true"
+        arc:menuChildAnim="false"
+        arc:menuShadowElevation="true"
+        arc:menuNormalColor="@color/colorAccent"
+        arc:menuImage="@mipmap/map"
+        android:layout_gravity="bottom|right">
+    </com.bvapp.arcmenulibrary.ArcMenu>
+
+    <com.bvapp.arcmenulibrary.ArcMenu
+        android:id="@+id/arcMenu2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        arc:menuType="normal"
+        arc:menuChildSize="48dp"
+        arc:menuGravity="Bottom_Middle"
+        arc:menuClickAnim="true"
+        arc:menuChildAnim="false"
+        arc:menuShadowElevation="true"
+        arc:menuNormalColor="@android:color/holo_green_dark"
+        arc:menuImage="@mipmap/alarm"
+        android:layout_gravity="bottom|center_vertical">
+    </com.bvapp.arcmenulibrary.ArcMenu>
+
+    <com.bvapp.arcmenulibrary.ArcMenu
+        android:id="@+id/arcMenu3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        arc:menuType="normal"
+        arc:menuChildSize="48dp"
+        arc:menuGravity="Bottom_Left"
+        arc:menuClickAnim="true"
+        arc:menuChildAnim="false"
+        arc:menuShadowElevation="true"
+        arc:menuNormalColor="@android:color/holo_blue_bright"
+        arc:menuImage="@mipmap/tools"
+        android:layout_gravity="bottom|left"
+        >
+    </com.bvapp.arcmenulibrary.ArcMenu>
+
+    <com.bvapp.arcmenulibrary.ArcMenu
+        android:id="@+id/arcMenu4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        arc:menuType="normal"
+        arc:menuChildSize="48dp"
+        arc:menuGravity="Right_Middle"
+        arc:menuClickAnim="true"
+        arc:menuChildAnim="false"
+        arc:menuShadowElevation="true"
+        arc:menuNormalColor="@android:color/holo_orange_dark"
+        arc:menuImage="@mipmap/tools"
+        android:layout_gravity="right|center_horizontal">
+    </com.bvapp.arcmenulibrary.ArcMenu>
+
+    <com.bvapp.arcmenulibrary.ArcMenu
+        android:id="@+id/arcMenu5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        arc:menuType="normal"
+        arc:menuChildSize="48dp"
+        arc:menuGravity="Center"
+        arc:menuClickAnim="true"
+        arc:menuChildAnim="false"
+        arc:menuShadowElevation="true"
+        arc:menuNormalColor="@color/colorPrimaryDark"
+        arc:menuImage="@mipmap/compass"
+        android:layout_gravity="center">
+    </com.bvapp.arcmenulibrary.ArcMenu>
+
+    <com.bvapp.arcmenulibrary.ArcMenu
+        android:id="@+id/arcMenu6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        arc:menuType="normal"
+        arc:menuChildSize="48dp"
+        arc:menuGravity="Left_Middle"
+        arc:menuClickAnim="true"
+        arc:menuChildAnim="false"
+        arc:menuShadowElevation="true"
+        arc:menuNormalColor="@android:color/holo_red_dark"
+        arc:menuImage="@mipmap/map"
+        android:layout_gravity="left|center_horizontal"
+        >
+    </com.bvapp.arcmenulibrary.ArcMenu>
+
+    <com.bvapp.arcmenulibrary.ArcMenu
+        android:id="@+id/arcMenu7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        arc:menuType="normal"
+        arc:menuChildSize="48dp"
+        arc:menuGravity="Top_Right"
+        arc:menuClickAnim="true"
+        arc:menuChildAnim="false"
+        arc:menuShadowElevation="true"
+        arc:menuNormalColor="@android:color/holo_purple"
+        arc:menuImage="@mipmap/flash"
+        android:layout_gravity="top|right"
+        >
+    </com.bvapp.arcmenulibrary.ArcMenu>
+
+    <com.bvapp.arcmenulibrary.ArcMenu
+        android:id="@+id/arcMenu8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        arc:menuType="normal"
+        arc:menuChildSize="48dp"
+        arc:menuGravity="Top_Middle"
+        arc:menuClickAnim="true"
+        arc:menuChildAnim="false"
+        arc:menuShadowElevation="true"
+        arc:menuNormalColor="@color/colorAccent"
+        arc:menuImage="@mipmap/compass"
+        android:layout_gravity="top|center_vertical"
+        >
+    </com.bvapp.arcmenulibrary.ArcMenu>
+
+    <com.bvapp.arcmenulibrary.ArcMenu
+        android:id="@+id/arcMenu9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        arc:menuType="normal"
+        arc:menuChildSize="48dp"
+        arc:menuGravity="Top_Left"
+        arc:menuClickAnim="true"
+        arc:menuChildAnim="false"
+        arc:menuShadowElevation="true"
+        arc:menuNormalColor="@android:color/holo_green_dark"
+        arc:menuImage="@mipmap/alarm"
+        android:layout_gravity="top|left"
+        >
+    </com.bvapp.arcmenulibrary.ArcMenu>
+
+
+</android.support.design.widget.CoordinatorLayout>

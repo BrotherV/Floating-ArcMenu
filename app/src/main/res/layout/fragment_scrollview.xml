@@ -1,0 +1,46 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:arc="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <com.bvapp.arcmenulibrary.ObservableScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="@string/moon"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"/>
+        </LinearLayout>
+
+
+    </com.bvapp.arcmenulibrary.ObservableScrollView>
+
+
+    <com.bvapp.arcmenulibrary.ArcMenu
+        android:id="@+id/arcMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        arc:menuType="normal"
+        arc:menuChildSize="48dp"
+        arc:menuGravity="Bottom_Right"
+        arc:menuClickAnim="true"
+        arc:menuChildAnim="false"
+        arc:menuShadowElevation="true"
+        arc:menuNormalColor="@color/colorAccent"
+        arc:menuImage="@mipmap/tools"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="6dp"
+        >
+    </com.bvapp.arcmenulibrary.ArcMenu>
+</FrameLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:minHeight="?attr/listPreferredItemHeight"
+              android:gravity="center_vertical"
+              android:paddingRight="?android:attr/scrollbarSize"
+              android:background="?attr/selectableItemBackground"
+              android:focusable="true" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="6dip">
+
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:id="@+id/imgLst"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"/>
+
+        <TextView android:id="@id/title"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:singleLine="true"
+                  android:textAppearance="?android:attr/textAppearanceLarge"
+                  android:textColor="?android:attr/textColorSecondary"
+                  android:ellipsize="marquee"
+                  android:fadingEdge="horizontal"
+                  android:gravity="right"
+                  android:layout_alignParentEnd="false"
+                  android:layout_alignParentRight="false"
+                  android:textSize="18sp"
+                  android:layout_centerVertical="true"
+                  android:text="Test"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

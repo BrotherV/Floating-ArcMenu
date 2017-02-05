@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">ArcMenu</string>
+    <string name="moon">The Moon is an astronomical body that orbits planet Earth, being Earths
+        only permanent natural satellite. It is the fifth-largest natural satellite in the Solar
+        System, and the largest among planetary satellites relative to the size of the planet that
+        it orbits (its primary). Following Jupiters satellite Io, the Moon is second-densest satellite
+        among those whose densities are known.
+        The average distance of the Moon from the Earth is 384,400 km (238,900 mi),[10][11] or 1.28 light-seconds.
+        The Moon is thought to have formed about 4.51 billion years ago, not long after Earth. There are several
+        hypotheses for its origin; the most widely accepted explanation is that the Moon formed from the debris
+        left over after a giant impact between Earth and a Mars-sized body called Theia.
+        The Moon is in synchronous rotation with Earth, always showing the same face, with its near side marked
+        by dark volcanic maria that fill the spaces between the bright ancient crustal highlands and the prominent
+        impact craters. It is the second-brightest regularly visible celestial object in Earths sky, after the Sun,
+        as measured by illuminance on Earths surface. Its surface is actually dark, although compared to the night
+        sky it appears very bright, with a reflectance just slightly higher than that of worn asphalt. Its prominence
+        in the sky and its regular cycle of phases have made the Moon an important cultural influence since ancient
+        times on language, calendars, art, mythology, and, it is often speculated, the menstrual cycles of the female
+        of the human species.[12]
+        The Moons gravitational influence produces the ocean tides, body tides, and the slight lengthening of the day.
+        The Moons current orbital distance is about thirty times the diameter of Earth, with its apparent size in the
+        sky almost the same as that of the Sun, resulting in the Moon covering the Sun nearly precisely in total solar
+        eclipse. This matching of apparent visual size will not continue in the far future. The Moons linear distance
+        from Earth is currently increasing at a rate of 3.82 ± 0.07 centimetres (1.504 ± 0.028 in) per year, but this
+        rate is not constant.
+        The Soviet Unions Luna programme was the first to reach the Moon with uncrewed spacecraft in 1959; the United
+        States NASA Apollo program achieved the only crewed missions to date, beginning with the first crewed lunar
+        orbiting mission by Apollo 8 in 1968, and six crewed lunar landings between 1969 and 1972, with the first being
+        Apollo 11. These missions returned over 380 kg (840 lb) of lunar rocks, which have been used to develop a
+        geological understanding of the Moons origin, the formation of its internal structure, and its subsequent
+        history. Since the Apollo 17 mission in 1972, the Moon has been visited only by uncrewed spacecraft.</string>
+</resources>
