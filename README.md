@@ -1,5 +1,6 @@
 # Floating-ArcMenu
-A prety menu for all application
+**A prety menu for all application**
+
 Android floating arc menu which reacts on scrolling events. Becomes visible when an attached target is scrolled up and invisible when scrolled down.
 
 ![Demo](art/multiple menu.gif)
@@ -8,9 +9,9 @@ Android floating arc menu which reacts on scrolling events. Becomes visible when
 ![Demo](art/recycler.gif)
 ![Demo](art/scroll.gif)
 
-**2)** Add the ``com.melnykov.fab.FloatingActionButton`` to your layout XML file. You can put the menu in eerywhere you want.
-The width and height of the floating action button are hardcoded to **64dp** for the large, **56dp** for the normal and **40dp**
-for the mini button as specified in the [guidelines].
+**2)** Add the ``com.bvapp.arcmenulibrary.ArcMenu`` to your layout XML file. You can put the menu in everywhere you want.
+The width and height of the floating arc menu are hardcoded to **64dp** for the large, **56dp** for the normal and **40dp**
+for the mini menu button.
 
 ```xml
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
