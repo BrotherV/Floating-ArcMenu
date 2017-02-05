@@ -56,8 +56,9 @@ private static final String[] STR = {"Facebook","Twiiter","Flickr","Instagram","
 //
 //
 
-RecyclerViewAdapter adapter = new RecyclerViewAdapter(new MyMusic());
-ecyclerView.setAdapter(adapter);
+RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
+RecyclerViewAdapter adapter = new RecyclerViewAdapter(new MyMisic());
+recyclerView.setAdapter(adapter);
 
 ArcMenu menu = (ArcMenu) findViewById(R.id.arcMenu);
 menu.attachToRecyclerView(recyclerView);
