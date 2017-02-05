@@ -9,7 +9,7 @@ Android floating arc menu which reacts on scrolling events. Becomes visible when
 ![Demo](art/recycler.gif)
 ![Demo](art/scroll.gif)
 
-**2)** Add the ``com.bvapp.arcmenulibrary.ArcMenu`` to your layout XML file. You can put the menu in everywhere you want.
+**1)** Add the ``com.bvapp.arcmenulibrary.ArcMenu`` to your layout XML file. You can put the menu in everywhere you want.
 The width and height of the floating arc menu are hardcoded to **64dp** for the large, **56dp** for the normal and **40dp**
 for the mini menu button.
 
@@ -45,7 +45,7 @@ for the mini menu button.
     </com.bvapp.arcmenulibrary.ArcMenu>
 </FrameLayout>
 ```
-* java usage
+**2)** Add java code in activity or fragment
 ``` java
 private static final int[] ITEM_DRAWABLES = { R.mipmap.facebook,
 			R.mipmap.twitter, R.mipmap.flickr, R.mipmap.instagram,
