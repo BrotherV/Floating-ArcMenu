@@ -46,6 +46,15 @@ for the mini button as specified in the [guidelines].
 ```
 * java usage
 ``` java
+private static final int[] ITEM_DRAWABLES = { R.mipmap.facebook,
+			R.mipmap.twitter, R.mipmap.flickr, R.mipmap.instagram,
+			R.mipmap.skype, R.mipmap.github };
+
+private static final String[] STR = {"Facebook","Twiiter","Flickr","Instagram","Skype","Github"};
+
+//
+//
+
 RecyclerViewAdapter adapter = new RecyclerViewAdapter(new MyMusic());
 ecyclerView.setAdapter(adapter);
 
@@ -59,12 +68,12 @@ menu.setToolTipTextColor(Color.BLUE);
 menu.setAnim(300,300,ArcMenu.ANIM_MIDDLE_TO_RIGHT,ArcMenu.ANIM_MIDDLE_TO_RIGHT,
       ArcMenu.ANIM_INTERPOLATOR_ACCELERATE_DECLERATE,ArcMenu.ANIM_INTERPOLATOR_ACCELERATE_DECLERATE);
 
-final int itemCount = MenuItem.ITEM_DRAWABLES.length;
+final int itemCount = ITEM_DRAWABLES.length;
 for (int i = 0; i < itemCount; i++) {
-	ImageView item = new ImageView(getContext());
+	ImageView item = new ImageView(this);
 	item.setImageResource(MenuItem.ITEM_DRAWABLES[i]);
  	final int position = i;
-	menu.addItem(item, MenuItem.STR[i], new View.OnClickListener() {
+	menu.addItem(item, STR[i], new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
         //You can access child click in here
