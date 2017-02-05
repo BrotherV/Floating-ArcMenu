@@ -56,7 +56,7 @@ private static final String[] STR = {"Facebook","Twiiter","Flickr","Instagram","
 //
 //
 
-RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
+RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 RecyclerViewAdapter adapter = new RecyclerViewAdapter(new MyMisic());
 recyclerView.setAdapter(adapter);
 
