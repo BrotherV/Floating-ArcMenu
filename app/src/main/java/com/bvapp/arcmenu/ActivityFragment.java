@@ -1,6 +1,7 @@
 package com.bvapp.arcmenu;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -31,7 +32,7 @@ public class ActivityFragment extends AppCompatActivity{
 	private static final int List_View_Fragment = 0x0F1;
 	private static final int Recycler_View_Fragment = 0x0F2;
 	private static final int Scroll_View_Fragment = 0x0F3;
-
+	public static Activity _actiity;
 	Fragment fragment;
 
 	@Override
@@ -39,6 +40,7 @@ public class ActivityFragment extends AppCompatActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fragment);
 
+		_actiity = this;
 		Bundle bundle = getIntent().getExtras();
 		if(bundle != null && bundle.containsKey("FRAGMENT_TYPE")){
 			switch (bundle.getInt("FRAGMENT_TYPE")){
@@ -88,7 +90,8 @@ public class ActivityFragment extends AppCompatActivity{
 
 					@Override
 					public void onClick(View v) {
-
+						Toast.makeText(_actiity, MenuItem.STR[position],
+								Toast.LENGTH_SHORT).show();
 					}
 				});
 			}
@@ -118,7 +121,8 @@ public class ActivityFragment extends AppCompatActivity{
 			menu.showTooltip(true);
 			menu.setToolTipBackColor(Color.WHITE);
 			menu.setToolTipCorner(6f);
-			menu.setToolTipPadding(2f);
+			menu.setToolTipPadding(4f);
+			menu.setToolTipTextSize(14);
 			menu.setToolTipTextColor(Color.BLUE);
 			menu.setAnim(300,300,ArcMenu.ANIM_MIDDLE_TO_RIGHT,ArcMenu.ANIM_MIDDLE_TO_RIGHT,
 					ArcMenu.ANIM_INTERPOLATOR_ACCELERATE_DECLERATE,ArcMenu.ANIM_INTERPOLATOR_ACCELERATE_DECLERATE);
@@ -133,7 +137,8 @@ public class ActivityFragment extends AppCompatActivity{
 
 					@Override
 					public void onClick(View v) {
-
+						Toast.makeText(_actiity, MenuItem.STR[position],
+								Toast.LENGTH_SHORT).show();
 					}
 				});
 			}
@@ -155,7 +160,8 @@ public class ActivityFragment extends AppCompatActivity{
 			menu.showTooltip(true);
 			menu.setToolTipBackColor(Color.BLUE);
 			menu.setToolTipCorner(6f);
-			menu.setToolTipPadding(2f);
+			menu.setToolTipPadding(4f);
+			menu.setToolTipTextSize(14);
 			menu.setToolTipTextColor(Color.WHITE);
 
 			final int itemCount = MenuItem.ITEM_DRAWABLES.length;

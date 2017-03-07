@@ -24,15 +24,17 @@ public class ActivityTooltip extends AppCompatActivity {
 		ArcMenu arcMenu = (ArcMenu) findViewById(R.id.arcMenuX);
 		ArcMenu arcMenuY = (ArcMenu) findViewById(R.id.arcMenuY);
 
-
-		initArcMenu(arcMenu, str, ITEM_DRAWABLES);
-		initArcMenu(arcMenuY, str, ITEM_DRAWABLES);
+		arcMenu.setToolTipTextSize(14);
+		arcMenuY.setToolTipTextSize(14);
 
 		arcMenu.setAnim(500,500,ArcMenu.ANIM_MIDDLE_TO_DOWN,ArcMenu.ANIM_MIDDLE_TO_RIGHT,
 				ArcMenu.ANIM_INTERPOLATOR_ANTICIPATE,ArcMenu.ANIM_INTERPOLATOR_ANTICIPATE);
 
 		arcMenu.showTooltip(true);
 		arcMenuY.showTooltip(true);
+
+		initArcMenu(arcMenu, str, ITEM_DRAWABLES);
+		initArcMenu(arcMenuY, str, ITEM_DRAWABLES);
 	}
 
 	private void initArcMenu(final ArcMenu menu, final String[] str, int[] itemDrawables) {

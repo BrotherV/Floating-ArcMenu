@@ -26,9 +26,9 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -131,7 +131,7 @@ public class ArcMenu extends RelativeLayout {
 	private ArrayList<String> mPopupValue;
 	private int mBackgroundColor = Color.TRANSPARENT;
 	private int mPadding;
-	private int mTextSize = (int) dpToPx(5);
+	private int mTextSize = 0;
 	private int mCornerRadius;
 	private ColorStateList mTextColor;
 	private Typeface mTypeface = Typeface.DEFAULT;
@@ -328,18 +328,20 @@ public class ArcMenu extends RelativeLayout {
 	 * @param str
 	 * @return
 	 */
-	private LinearLayout getContentView(String str) {
+	private TextView getContentView(String str) {
 		GradientDrawable drawable = new GradientDrawable();
 		drawable.setColor(mBackgroundColor);
 		drawable.setCornerRadius(mCornerRadius);
 
 		TextView textView = new TextView(mContext);
 		textView.setText(str);
-		textView.setPadding(mPadding, mPadding, mPadding, mPadding);
+		textView.setPadding(mPadding, mPadding/2, mPadding, mPadding/2);
 		textView.setTypeface(mTypeface);
 
-		if (mTextSize >= 0) {
-			//textView.setTextSize(mTextSize);
+		if (mTextSize > 0) {
+			textView.setTextSize(mTextSize);
+		}else{
+			textView.setTextSize(10);
 		}
 		if (mTextColor != null) {
 			textView.setTextColor(mTextColor);
@@ -353,14 +355,21 @@ public class ArcMenu extends RelativeLayout {
 		}
 
 		LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
-		textViewParams.gravity = Gravity.CENTER;
+		textViewParams.gravity = Gravity.RIGHT;
 		textView.setLayoutParams(textViewParams);
 
-		LinearLayout mContentView = new LinearLayout(mContext);
+		FrameLayout mContentView = new FrameLayout(mContext);
 		mContentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-		mContentView.addView(textView);
-		return mContentView;
+		final int w = TextUtil.getWidth(mContext, str, mTextSize == 0 ? 10:mTextSize,
+				TextUtil.getDeviceWidth(),mTypeface,mPadding);
+		final int h = TextUtil.getHeight(mContext, str, mTextSize == 0 ? 10:mTextSize,
+				TextUtil.getDeviceWidth(),mTypeface,mPadding);
+
+		Log.i("Child measure", "Size Height: " + h + "   Size Width: " + w);
+		setArcLayoutTextSize(w, h);
+		//mContentView.addView(textView);
+		return textView;
 	}
 
 	/**
@@ -581,6 +590,9 @@ public class ArcMenu extends RelativeLayout {
 		mArcLayout.setArc(fromDegree,toDegree);
 	}
 
+	public void setToolTipTextSize(int size) {
+		mTextSize = size;
+	}
 	public void setToolTipBackColor(int color) {
 		mBackgroundColor = color;
 	}
@@ -594,6 +606,9 @@ public class ArcMenu extends RelativeLayout {
 		mCornerRadius = (int) dpToPx(corner);
 	}
 
+	private void setArcLayoutTextSize(int w, int h){
+		mArcLayout.setTextSize(w, h);
+	}
 	/**
 	 *
 	 * @param px

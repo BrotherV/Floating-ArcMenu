@@ -106,6 +106,7 @@ public class FloatingActionButton extends ImageButton {
 
 	@SuppressLint("NewApi")
 	private void init(Context context, AttributeSet attributeSet) {
+		this.setLongClickable(false);
 		mVisible = true;
 		mColorNormal = Color.BLUE;
 		mColorPressed = darkenColor(mColorNormal);

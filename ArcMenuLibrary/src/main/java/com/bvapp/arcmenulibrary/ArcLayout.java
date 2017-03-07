@@ -27,6 +27,7 @@ import android.support.annotation.DimenRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -41,6 +42,8 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
+import java.util.ArrayList;
 
 
 /**
@@ -97,6 +100,8 @@ public class ArcLayout extends RelativeLayout {
 	private int	       menuGravity	  = DEFAULT_HINT_GRAVITY;
 	private float	     mFromDegrees	 = DEFAULT_FROM_DEGREES;
 	private float	     mToDegrees	   = DEFAULT_TO_DEGREES;
+	private float	     tDeg	 = DEFAULT_FROM_DEGREES;
+	private float	     tPerDeg	   = DEFAULT_TO_DEGREES;
 
 	/* the distance between the layout's center and any child's center */
 	private int	       mRadius;
@@ -106,6 +111,7 @@ public class ArcLayout extends RelativeLayout {
 	private boolean	   mAnimDone = true;
 
 	/*    */
+	private ArrayList<TextStructure> textStructure = new ArrayList<>();
 	private boolean	   menuItemRotatationInClosing;
 	private boolean	   checkCenterGravity;
 	private boolean	   toolTipCtrl;
@@ -178,11 +184,11 @@ public class ArcLayout extends RelativeLayout {
 	}
 
 	private static Rect computeChildFrame(final int centerX, final int centerY,
-	                                      final int radius, final float degrees, final int h, int w) {
+	                                      final int radius, final int shiftY, final int shiftX, final float degrees, final int h, int w) {
 
-		final double childCenterX = centerX + radius
+		final double childCenterX = centerX + (shiftX + radius)
 				* Math.cos(Math.toRadians(degrees));
-		final double childCenterY = centerY + radius
+		final double childCenterY = centerY + (shiftY + radius)
 				* Math.sin(Math.toRadians(degrees));
 
 		return new Rect((int) (childCenterX - w / 2),
@@ -251,12 +257,19 @@ public class ArcLayout extends RelativeLayout {
 
 
 		final int count = getChildCount();
+		TextStructure str = new TextStructure();
+		int j = 0;
 		for (int i = 0; i < count; i++) {
+			if(i % 2 != 0){
+				str = textStructure.get(j);
+				j++;
+			}
+			//Log.i("Child measure", "Size Height: " + str.h + "   Size Width: " + str.w);
 			getChildAt(i)
 					.measure(
-							MeasureSpec.makeMeasureSpec((i%2 == 0 )? mChildSize : mViewWidth,
+							MeasureSpec.makeMeasureSpec((i%2 == 0 )? mChildSize : str.w,
 									MeasureSpec.EXACTLY),
-							MeasureSpec.makeMeasureSpec((i%2 == 0 )? mChildSize : mViewHeight,
+							MeasureSpec.makeMeasureSpec((i%2 == 0 )? mChildSize : str.h,
 									MeasureSpec.EXACTLY));
 		}
 	}
@@ -333,9 +346,30 @@ public class ArcLayout extends RelativeLayout {
 
 		childCount = getChildCount()/2;
 		final float perDegrees = (mToDegrees - mFromDegrees) / (childCount - 1);
-		float totalDegree = Math.abs(mToDegrees - mFromDegrees);
+		tPerDeg = (Math.abs(mToDegrees - mFromDegrees) -5) / (childCount - 1);
+		if(perDegrees < 0){
+			tPerDeg *= -1;
+		}
 
 		float degrees = mFromDegrees;
+		float tDeg = degrees;
+		if(mFromDegrees == -5){
+			tDeg = -2.5f;
+		}else if(mFromDegrees == -95){
+			tDeg = -92.5f;
+		}else if(mFromDegrees == 85){
+			tDeg = 87.5f;
+		}else if(mFromDegrees == 275){
+			tDeg = 272.5f;
+		}else if(mFromDegrees == 175){
+			tDeg = 177.5f;
+		} else{
+			tDeg = 0;
+		}
+		this.tDeg = tDeg;
+
+		TextStructure tStructure = new TextStructure();
+		int j = 0;
 		int childAt = 0;
 		for (int i = 0; i < childCount; i++) {
 			Rect frame = computeChildFrame(centerX, centerY, radius, degrees,
@@ -346,18 +380,14 @@ public class ArcLayout extends RelativeLayout {
 			childAt++;
 
 			if(toolTipCtrl){
-				int shift = 0;
-				int[] offset = getOffset();
-				frame = computeChildFrame(centerX, centerY, mExpanded ? mRadius + mChildSize : 0, degrees,
-						mViewHeight, mViewWidth);
+				tStructure = textStructure.get(j);
+				j++;
+				int shift = getShift(mFromDegrees, mToDegrees, tDeg, tStructure.w);
 
-				if(menuGravity == RIGHT_MIDDLE || menuGravity == BOTTOM_RIGHT || menuGravity == TOP_RIGHT){
-					shift = offset[1];
-				}else{
-					shift = offset[0];
-				}
+				frame = computeChildFrame(centerX, centerY, mExpanded ? mRadius : 0, mChildSize, shift, tDeg,
+						getChildAt(childAt).getMeasuredHeight(), getChildAt(childAt).getMeasuredWidth());
 
-				getChildAt(childAt).layout(frame.left + shift, frame.top, frame.right + shift, frame.bottom);
+				getChildAt(childAt).layout(frame.left, frame.top, frame.right, frame.bottom);
 				getChildAt(childAt).setVisibility(mExpanded ? VISIBLE :INVISIBLE);
 			}else{
 				getChildAt(childAt).setVisibility(INVISIBLE);
@@ -365,9 +395,78 @@ public class ArcLayout extends RelativeLayout {
 
 			childAt++;
 			degrees += perDegrees;
+			tDeg += tPerDeg;
 		}
 	}
 
+	/**
+	 *
+	 * @param fDeg
+	 * @param tDeg
+	 * @param cDeg
+	 * @param w
+	 * @return
+	 */
+	private int getShift(float fDeg, float tDeg, float cDeg, int w){
+		int shift = mChildSize;
+		if(fDeg == 265 && tDeg == 365){
+			if(Math.abs(cDeg - 365) < 45){
+				if(w > mChildSize){
+					shift = w;
+				}
+			}
+		}else if(fDeg == 175 && tDeg == 365){
+			if(Math.abs(cDeg - 365) < 45 || Math.abs(cDeg - 175) < 45){
+				if(w > mChildSize){
+					shift = w;
+				}
+			}
+		}else if(fDeg == 275 && tDeg == 175){
+			if(Math.abs(cDeg - 275) > 45){
+				if(w > mChildSize){
+					shift = w;
+				}
+			}
+		}else if(fDeg == -95 && tDeg == 95){
+			if(Math.abs(cDeg - (-95f)) > 45 || Math.abs(cDeg - 95) > 45){
+				if(w > mChildSize){
+					shift = w;
+				}
+			}
+		}else if(fDeg == 275 && tDeg == 85){
+			if(Math.abs(cDeg - 275) > 45 || Math.abs(cDeg - 85) > 45){
+				if(w > mChildSize){
+					shift = w;
+				}
+			}
+		}else if(fDeg == -5 && tDeg == 95){
+			if(Math.abs(cDeg - 95) > 45){
+				if(w > mChildSize){
+					shift = w;
+				}
+			}
+		}else if(fDeg == -5 && tDeg == 185){
+			if(Math.abs(cDeg) < 45 || Math.abs(cDeg - 185) < 45){
+				if(w > mChildSize){
+					shift = w;
+				}
+			}
+		}else if(fDeg == 85 && tDeg == 185){
+			if(Math.abs(cDeg - 85) > 45){
+				if(w > mChildSize){
+					shift = w;
+				}
+			}
+		}else if(fDeg == 0 && tDeg == 360){
+			if((Math.abs(cDeg - 270) > 45 && cDeg > 135) ||
+					Math.abs(cDeg - 360) < 45 || cDeg < 45 ){
+				if(w > mChildSize){
+					shift = w;
+				}
+			}
+		}
+		return shift;
+	}
 	/**
 	 *
 	 * @param child
@@ -387,28 +486,16 @@ public class ArcLayout extends RelativeLayout {
 		final float perDegrees = (mToDegrees - mFromDegrees) / (childCount - 1);
 		Rect frame;
 		if(order % 2 != 0){
-			frame = computeChildFrame(centerX, centerY, mExpanded ? 0 : mRadius + mChildSize, mFromDegrees
-					+ index * perDegrees, mViewHeight, mViewWidth);
+			int shift = getShift(mFromDegrees, mToDegrees, tDeg + index * tPerDeg, child.getMeasuredWidth());
+			frame = computeChildFrame(centerX, centerY, mExpanded ? 0 : mRadius, mChildSize, shift,tDeg
+					+ index * tPerDeg, child.getMeasuredHeight(), child.getMeasuredWidth());
 		}else{
 			frame = computeChildFrame(centerX, centerY, radius, mFromDegrees
 					+ index * perDegrees, mChildSize);
 		}
 
-
 		int toXDelta = frame.left - child.getLeft();
 		int toYDelta = frame.top - child.getTop();
-
-		if(order % 2 != 0){
-			int shift = 0;
-			int[] offset = getOffset();
-			if(menuGravity == RIGHT_MIDDLE || menuGravity == BOTTOM_RIGHT || menuGravity == TOP_RIGHT){
-				shift = offset[1];
-			}else{
-				shift = offset[0];
-			}
-
-			toXDelta += shift;
-		}
 
 		Interpolator interpolator = mExpanded ? new AccelerateInterpolator()
 				: new OvershootInterpolator(1.5f);
@@ -513,13 +600,20 @@ public class ArcLayout extends RelativeLayout {
 
 		animationSet.addAnimation(translateAnimation);
 
+		Animation alphaT = new AlphaAnimation(0f, 1.0f);
+		alphaT.setStartOffset(startOffset);
+		alphaT.setDuration(duration);
+		alphaT.setInterpolator(interpolator);
+		alphaT.setFillAfter(true);
+
 		Animation alpha = new AlphaAnimation(0f, 1.0f);
-		alpha.setStartOffset(startOffset);
-		alpha.setDuration(duration);
+		alpha.setDuration((long) (duration * 0.2));
 		alpha.setInterpolator(interpolator);
 		alpha.setFillAfter(true);
 
 		if(index % 2 != 0){
+			animationSet.addAnimation(alphaT);
+		}else {
 			animationSet.addAnimation(alpha);
 		}
 		return animationSet;
@@ -820,53 +914,11 @@ public class ArcLayout extends RelativeLayout {
 		requestLayout();
 	}
 
-	private boolean hasLollipopApi() {
-		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-	}
-
-	private int[] getOffset() {
-		int width = getResources().getDisplayMetrics().widthPixels;
-		int height = getResources().getDisplayMetrics().heightPixels;
-
-		int shift[] = new int[2];
-		switch (width){
-			case 1200:
-				shift[0] = -(int) dpToPx(10);
-				shift[1] = -(int) dpToPx(32);
-				break;
-			case 1080:
-				shift[0] = -(int) dpToPx(8);
-				shift[1] = -(int) dpToPx(28);
-				break;
-			case 800:
-				shift[0] = -(int) dpToPx(8);
-				shift[1] = -(int) dpToPx(28);
-				break;
-			case 720:
-				shift[0] = -(int) dpToPx(8);
-				shift[1] = -(int) dpToPx(28);
-				break;
-			case 600:
-				shift[0] = -(int) dpToPx(8);
-				shift[1] = -(int) dpToPx(28);
-				break;
-			case 540:
-				shift[0] = -(int) dpToPx(8);
-				shift[1] = -(int) dpToPx(28);
-				break;
-			case 480:
-				shift[0] = (int) dpToPx(28);
-				shift[1] = (int) dpToPx(8);
-				break;
-			case 320:
-				shift[0] = (int) dpToPx(28);
-				shift[1] = (int) dpToPx(8);
-				break;
-			default:
-				shift[0] = -(int) dpToPx(8);
-				shift[1] = -(int) dpToPx(28);
-		}
-		return shift;
+	public void setTextSize(int w, int h){
+		TextStructure str = new TextStructure();
+		str.h = h;
+		str.w = w;
+		textStructure.add(str);
 	}
 
 	public void setOnMenuItemOpenClose(OnMenuItemOpenClose l){
