@@ -1,3 +1,6 @@
+[![GitHub license](https://img.shields.io/github/license/dcendents/android-maven-gradle-plugin.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.dcendents/android-maven-gradle-plugin.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22android-maven-gradle-plugin%22)
+[![](https://jitpack.io/v/BrotherV/Floating-ArcMenu.svg)](https://jitpack.io/#BrotherV/Floating-ArcMenu)
 # Floating-ArcMenu
 **A prety menu for all application**
 
@@ -84,6 +87,24 @@ for (int i = 0; i < itemCount; i++) {
 }
 ```
 
+Usage
+====================
+
+Step 1. Add it in your root build.gradle at the end of repositories:
+```Groovy
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+Step 2. Add the dependency
+```Groovy
+dependencies {
+	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.6.1'
+	}
+```
 # Credits
 I used [ArcMenu by Capricorn](https://github.com/daCapricorn/ArcMenu) and [FloatingActionButton](https://github.com/makovkastar/FloatingActionButton) 
 libraries as a base for development.
