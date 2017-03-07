@@ -173,23 +173,15 @@ public class ArcMenu extends RelativeLayout {
 
 		fabMenu = (FloatingActionButton) findViewById(R.id.fabArcMenu);
 
-		fabMenu.setOnTouchListener(new OnTouchListener() {
-
+		fabMenu.setOnClickListener(new OnClickListener() {
 			@Override
-			public boolean onTouch(View view, MotionEvent event) {
-
-				switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-					case MotionEvent.ACTION_UP:
-						if(menuAnim && mArcLayout.isAnimDone()){
-							fabMenu.startAnimation(menuClickIn);
-						}
-						if(mArcLayout.isAnimDone()){
-							mArcLayout.switchState(true);
-						}
-						break;
+			public void onClick(View view) {
+				if(menuAnim && mArcLayout.isAnimDone()){
+					fabMenu.startAnimation(menuClickIn);
 				}
-				return false;
+				if(mArcLayout.isAnimDone()){
+					mArcLayout.switchState(true);
+				}
 			}
 		});
 
