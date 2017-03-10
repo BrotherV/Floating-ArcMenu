@@ -25,13 +25,13 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -87,6 +87,11 @@ public class ArcMenu extends RelativeLayout {
 	public static final int ANIM_INTERPOLATOR_ACCELERATE_DECLERATE = 0xF18;
 	public static final int ANIM_INTERPOLATOR_ANTICIPATE= 0xF19;
 	public static final int ANIM_INTERPOLATOR_BOUNCE = 0xF1A;
+
+	public static final int TOOLTIP_UP= 0xF20;
+	public static final int TOOLTIP_DOWN= 0xF21;
+	public static final int TOOLTIP_RIGHT= 0xF22;
+	public static final int TOOLTIP_LEFT= 0xF23;
 
 
 	private static final int ANIM_DURATION = 300;
@@ -245,14 +250,8 @@ public class ArcMenu extends RelativeLayout {
 			color = b.getColor(R.styleable.ArcMenu_menuRippleColor, Color.BLUE);
 			fabMenu.setColorRipple(color);
 
-			Drawable drawable = b.getDrawable(R.styleable.ArcMenu_menuImage);
-			if (drawable != null) {
-				fabMenu.setImageDrawable(drawable);
-				//fabMenu.setBackground(drawable);
-			}
-
 			isShadow = b.getBoolean(R.styleable.ArcMenu_menuShadowElevation,false);
-			mShadowElevation = fabMenu.getEleationSize();
+			mShadowElevation = fabMenu.getShadowSize();
 			if (isShadow) {
 				//defaultMenuSize += mShadowElevation * 2;
 				fabMenu.setShadow(true);
@@ -273,8 +272,14 @@ public class ArcMenu extends RelativeLayout {
 			mArcLayout.setTextViewSize(mChildSize * 2, mChildSize/2);
 
 			mMenuSize = defaultMenuSize;
-			fabMenu.setFabSize(mType);
+			fabMenu.setFabType(mType);
 			mArcLayout.setMenuSize(mMenuSize);
+
+			Drawable drawable = b.getDrawable(R.styleable.ArcMenu_menuImage);
+			if (drawable != null) {
+				fabMenu.setTopIcon(drawable, defaultMenuSize);
+				//fabMenu.setImageDrawable(drawable);
+			}
 
 			mMarginBottom = b.getDimensionPixelSize(R.styleable.ArcMenu_menuMarginBottom, 0);
 			mMarginTop = b.getDimensionPixelSize(R.styleable.ArcMenu_menuMarginTop, 0);
@@ -353,10 +358,10 @@ public class ArcMenu extends RelativeLayout {
 		FrameLayout mContentView = new FrameLayout(mContext);
 		mContentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-		final int w = TextUtil.getWidth(mContext, str, mTextSize == 0 ? 10:mTextSize,
-				TextUtil.getDeviceWidth(),mTypeface,mPadding);
-		final int h = TextUtil.getHeight(mContext, str, mTextSize == 0 ? 10:mTextSize,
-				TextUtil.getDeviceWidth(),mTypeface,mPadding);
+		final int w = Util.getWidth(mContext, str, mTextSize == 0 ? 10:mTextSize,
+				Util.getDeviceWidth(),mTypeface,mPadding);
+		final int h = Util.getHeight(mContext, str, mTextSize == 0 ? 10:mTextSize,
+				Util.getDeviceWidth(),mTypeface,mPadding);
 
 		Log.i("Child measure", "Size Height: " + h + "   Size Width: " + w);
 		setArcLayoutTextSize(w, h);
@@ -573,6 +578,15 @@ public class ArcMenu extends RelativeLayout {
 		clickMenu();
 		return false;
 	}
+
+	public void setMinRadius(int radius) {
+		mArcLayout.setMinRadius((int) dpToPx(radius));
+	}
+
+	public void setRadius(int radius) {
+		mArcLayout.setRadius((int) dpToPx(radius));
+	}
+
 	/**
 	 *
 	 * @param fromDegree
@@ -580,6 +594,25 @@ public class ArcMenu extends RelativeLayout {
 	 */
 	public void setArc(float fromDegree, float toDegree) {
 		mArcLayout.setArc(fromDegree,toDegree);
+	}
+
+	public void setColorNormal(int color) {
+		fabMenu.setColorNormal(color);
+	}
+
+	public void setColorPressed(int color) {
+		fabMenu.setColorRipple(color);
+	}
+
+	public void setColorRipple(int color) {
+		fabMenu.setColorRipple(color);
+	}
+	/**
+	 *
+	 * @param side
+	 */
+	public void setToolTipSide(int side) {
+		mArcLayout.setToolTipSide(side);
 	}
 
 	public void setToolTipTextSize(int size) {

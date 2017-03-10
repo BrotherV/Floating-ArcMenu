@@ -18,7 +18,7 @@
         arc:menuClickAnim="true"
         arc:menuChildAnim="false"
         arc:menuShadowElevation="true"
-        arc:menuNormalColor="@color/colorPrimaryDark"
+        arc:menuNormalColor="@color/colorPrimary"
         arc:menuImage="@mipmap/tools"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="6dp"

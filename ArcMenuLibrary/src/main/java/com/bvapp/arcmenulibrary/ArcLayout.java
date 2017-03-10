@@ -17,18 +17,9 @@
 package com.bvapp.arcmenulibrary;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DimenRes;
-import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -40,7 +31,6 @@ import android.view.animation.LayoutAnimationController;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -79,6 +69,11 @@ public class ArcLayout extends RelativeLayout {
 
 	private static final int  MIN_RADIUS	   = 100;
 
+	public static final int TOOLTIP_UP= 0xF20;
+	public static final int TOOLTIP_DOWN= 0xF21;
+	public static final int TOOLTIP_RIGHT= 0xF22;
+	public static final int TOOLTIP_LEFT= 0xF23;
+
 	private Context mContext;
 	private int	       mLayoutCenterX;
 	private int	       mLayoutCenterY;
@@ -104,17 +99,20 @@ public class ArcLayout extends RelativeLayout {
 	private float	     tPerDeg	   = DEFAULT_TO_DEGREES;
 
 	/* the distance between the layout's center and any child's center */
-	private int	       mRadius;
+	private int	       mRadius = 0;
 	private int	       mMinRadius = MIN_RADIUS;
 	private boolean	   mExpanded	    = false;
 	private boolean	   mExpandDone;
 	private boolean	   mAnimDone = true;
+	private boolean	   mRaiusCtrl;
 
 	/*    */
 	private ArrayList<TextStructure> textStructure = new ArrayList<>();
 	private boolean	   menuItemRotatationInClosing;
 	private boolean	   checkCenterGravity;
 	private boolean	   toolTipCtrl;
+	private int	   mToolTipSide;
+	private int	   mPreChildOffset;
 
 	/**
 	 *
@@ -217,9 +215,10 @@ public class ArcLayout extends RelativeLayout {
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		//super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-		final int radius = mRadius = computeRadius(
+		int radius = mRadius = computeRadius(
 				Math.abs(mToDegrees - mFromDegrees), getChildCount()/2,
 				mChildSize, mChildPadding, mMinRadius);
+
 		final int size = radius * 3 + mChildSize + mChildPadding
 				+ mLayoutPadding * 2 + mMenuSize + 4 * mDefaultShift + mViewWidth;
 
@@ -382,12 +381,26 @@ public class ArcLayout extends RelativeLayout {
 			if(toolTipCtrl){
 				tStructure = textStructure.get(j);
 				j++;
-				int shift = getShift(mFromDegrees, mToDegrees, tDeg, tStructure.w);
-
-				frame = computeChildFrame(centerX, centerY, mExpanded ? mRadius : 0, mChildSize, shift, tDeg,
+				int l1, r1, t1, b1;
+				l1 = r1 = t1 = b1 = 0;
+				frame = computeChildFrame(centerX, centerY, mExpanded ? mRadius : 0, 0, 0, degrees,
 						getChildAt(childAt).getMeasuredHeight(), getChildAt(childAt).getMeasuredWidth());
+				if(mToolTipSide == TOOLTIP_UP){
+					t1 = getFrameOffsetY(tStructure.h);
+				}else if(mToolTipSide == TOOLTIP_DOWN){
+					b1 = getFrameOffsetY(tStructure.h);
+				}else if(mToolTipSide == TOOLTIP_RIGHT){
+					r1 = getFrameOffsetX(tStructure.w);
+				}else if(mToolTipSide == TOOLTIP_LEFT){
+					l1 = getFrameOffsetX(tStructure.w);
+				}else {
+					int shiftX = getShift(mFromDegrees, mToDegrees, tDeg, tStructure.w);
+					int shiftY = mChildSize;
+					frame = computeChildFrame(centerX, centerY, mExpanded ? mRadius : 0, shiftY, shiftX, tDeg,
+							getChildAt(childAt).getMeasuredHeight(), getChildAt(childAt).getMeasuredWidth());
+				}
 
-				getChildAt(childAt).layout(frame.left, frame.top, frame.right, frame.bottom);
+				getChildAt(childAt).layout(frame.left - l1 + r1, frame.top - t1 + b1, frame.right - l1 + r1, frame.bottom - t1 + b1);
 				getChildAt(childAt).setVisibility(mExpanded ? VISIBLE :INVISIBLE);
 			}else{
 				getChildAt(childAt).setVisibility(INVISIBLE);
@@ -399,6 +412,22 @@ public class ArcLayout extends RelativeLayout {
 		}
 	}
 
+	private int getFrameOffsetX(int w){
+		/*
+		mPreChildOffset = w;
+		for(TextStructure str: textStructure){
+			if(str.w > mPreChildOffset){
+				mPreChildOffset = str.w;
+			}
+		}
+		return (mPreChildOffset + mChildSize + (int) dpToPx(4))/2;
+		*/
+		return (w + mChildSize + (int) dpToPx(4))/2  ;
+	}
+
+	private int getFrameOffsetY(int h){
+		return h > mChildSize ? h : mChildSize;
+	}
 	/**
 	 *
 	 * @param fDeg
@@ -486,9 +515,27 @@ public class ArcLayout extends RelativeLayout {
 		final float perDegrees = (mToDegrees - mFromDegrees) / (childCount - 1);
 		Rect frame;
 		if(order % 2 != 0){
-			int shift = getShift(mFromDegrees, mToDegrees, tDeg + index * tPerDeg, child.getMeasuredWidth());
-			frame = computeChildFrame(centerX, centerY, mExpanded ? 0 : mRadius, mChildSize, shift,tDeg
-					+ index * tPerDeg, child.getMeasuredHeight(), child.getMeasuredWidth());
+			frame = computeChildFrame(centerX, centerY, mExpanded ? 0 : mRadius, 0, 0,mFromDegrees
+					+ index * perDegrees, child.getMeasuredHeight(), child.getMeasuredWidth());
+			int offsetX = getFrameOffsetX(child.getMeasuredWidth());
+			int offsetY = getFrameOffsetY(child.getMeasuredHeight());
+			if(mToolTipSide == TOOLTIP_UP){
+				frame.top -= offsetY;
+				frame.bottom -= offsetY;
+			}else if(mToolTipSide == TOOLTIP_DOWN){
+				frame.top += offsetY;
+				frame.bottom += offsetY;
+			}else if(mToolTipSide == TOOLTIP_RIGHT){
+				frame.left += offsetX;
+				frame.right += offsetX;
+			}else if(mToolTipSide == TOOLTIP_LEFT){
+				frame.left -= offsetX;
+				frame.right -= offsetX;
+			}else{
+				int shift = getShift(mFromDegrees, mToDegrees, tDeg + index * tPerDeg, child.getMeasuredWidth());
+				frame = computeChildFrame(centerX, centerY, mExpanded ? 0 : mRadius, mChildSize, shift,tDeg
+						+ index * tPerDeg, child.getMeasuredHeight(), child.getMeasuredWidth());
+			}
 		}else{
 			frame = computeChildFrame(centerX, centerY, radius, mFromDegrees
 					+ index * perDegrees, mChildSize);
@@ -752,6 +799,10 @@ public class ArcLayout extends RelativeLayout {
 		requestLayout();
 	}
 
+	public void setToolTipSide(int mToolTipSide) {
+		this.mToolTipSide = mToolTipSide;
+	}
+
 	/**
 	 *
 	 * @param left
@@ -860,6 +911,12 @@ public class ArcLayout extends RelativeLayout {
 	 */
 	public int getRadius() {
 		return mRadius;
+	}
+
+	public void setRadius(int mRadius) {
+		this.mRadius = mRadius;
+		mRaiusCtrl = true;
+		requestLayout();
 	}
 
 	/**

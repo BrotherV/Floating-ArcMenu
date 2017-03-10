@@ -5,9 +5,15 @@ import android.animation.StateListAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Outline;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -18,6 +24,7 @@ import android.os.Build;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.View;
@@ -28,9 +35,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
-import com.nineoldandroids.view.ViewHelper;
-import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -47,18 +51,26 @@ public class FloatingActionButton extends ImageButton {
 	public @interface TYPE {
 	}
 
+	public static final float ICON_SIZE = 0.85f;
+
 	public static final int TYPE_LARGE = 0;
 	public static final int TYPE_NORMAL = 1;
 	public static final int TYPE_MINI = 2;
 
-	private boolean mVisible;
+	public static final int SIZE_LARGE = Util.dpToPx(64);
+	public static final int SIZE_NORMAL = Util.dpToPx(56);
+	public static final int SIZE_MINI = Util.dpToPx(42);
 
+	private Drawable mIcon;
+	private boolean mVisible;
 	private int mColorNormal;
 	private int mColorPressed;
 	private int mColorRipple;
 	private int mColorDisabled;
 	private boolean mShadow;
 	private int mType;
+	private int mSize;
+	private float mIconSize = ICON_SIZE;
 
 	private int mShadowSize;
 
@@ -86,16 +98,16 @@ public class FloatingActionButton extends ImageButton {
 		int size = 0;
 		switch (mType){
 			case TYPE_LARGE:
-				size = getDimension(R.dimen.fab_size_large);
+				size = mSize = getDimension(R.dimen.fab_size_large);
 				break;
 			case TYPE_NORMAL:
-				size = getDimension(R.dimen.fab_size_normal);
+				size = mSize = getDimension(R.dimen.fab_size_normal);
 				break;
 			case TYPE_MINI:
-				size = getDimension(R.dimen.fab_size_mini);
+				size = mSize = getDimension(R.dimen.fab_size_mini);
 				break;
 			default:
-				size = getDimension(R.dimen.fab_size_normal);
+				size = mSize = getDimension(R.dimen.fab_size_normal);
 		}
 		if (mShadow && !hasLollipopApi()) {
 			size += mShadowSize * 2;
@@ -209,23 +221,37 @@ public class FloatingActionButton extends ImageButton {
 				elevation = 0.0f;
 			}
 			setElevation(elevation);
+
 			RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{{}},
 					new int[]{mColorRipple}), drawable, null);
+			/*
 			setOutlineProvider(new ViewOutlineProvider() {
 				@Override
 				public void getOutline(View view, Outline outline) {
-					int size = getDimension(mType == TYPE_NORMAL ? R.dimen.fab_size_normal
-							: R.dimen.fab_size_mini);
+					int size = mSize;
 					outline.setOval(0, 0, size, size);
 				}
 			});
-			setClipToOutline(true);
-			setBackground(rippleDrawable);
+			*/
+			//setClipToOutline(true);
+			setBackground(getDrawable(rippleDrawable));
+
 		} else if (hasJellyBeanApi()) {
-			setBackground(drawable);
+			setBackground(getDrawable(drawable));
 		} else {
-			setBackgroundDrawable(drawable);
+			setBackgroundDrawable(getDrawable(drawable));
 		}
+	}
+
+	private Drawable getDrawable(Drawable backDrawable){
+		Drawable icon = setIcon(mIcon);
+		LayerDrawable layerDrawable;
+		if(icon != null){
+			layerDrawable = new LayerDrawable(new Drawable[]{backDrawable, icon});
+		}else{
+			layerDrawable = new LayerDrawable(new Drawable[]{backDrawable});
+		}
+		return layerDrawable;
 	}
 
 	private int getMarginBottom() {
@@ -236,6 +262,55 @@ public class FloatingActionButton extends ImageButton {
 		}
 		return marginBottom;
 	}
+
+	public void setTopIcon(Drawable drawable) {
+		if (drawable != null) {
+			mIcon = drawable;
+			updateBackground();
+		}
+	}
+
+
+	public void setTopIcon(Drawable drawable, int size) {
+		if (drawable != null) {
+			mSize = size;
+			mIcon = drawable;
+			updateBackground();
+		}
+	}
+
+	public void setTopIcon(@DrawableRes int resId, int size) {
+		try {
+			Bitmap b = new BitmapFactory().decodeResource(getResources(), resId);
+			mIcon = new BitmapDrawable(getResources(), b);
+			mSize = size;
+			updateBackground();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	public void setTopIcon(@DrawableRes int resId) {
+		try {
+			Bitmap b = new BitmapFactory().decodeResource(getResources(), resId);
+			mIcon = new BitmapDrawable(getResources(), b);
+			updateBackground();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	public void setIconSize(float size) {
+		if (size >  1) {
+			mIconSize = 1f;
+		}else if(size < 0.5f){
+			mIconSize = 0.5f;
+		}else {
+			mIconSize = size;
+		}
+		updateBackground();
+	}
+
 
 	public void setColorNormal(int color) {
 		if (color != mColorNormal) {
@@ -289,14 +364,28 @@ public class FloatingActionButton extends ImageButton {
 		}
 	}
 
-	public void setFabSize(int type) {
+	public void setFabType(int type) {
 		if (type != mType) {
 			mType = type;
 			requestLayout();
 		}
 	}
 
-	public int getEleationSize() {
+	public void setFabSize(int size) {
+		if (size == SIZE_LARGE) {
+			mSize = SIZE_LARGE;
+			mType = TYPE_LARGE;
+		}else if (size == SIZE_NORMAL) {
+			mSize = SIZE_NORMAL;
+			mType = TYPE_NORMAL;
+		}else {
+			mSize = SIZE_MINI;
+			mType = TYPE_MINI;
+		}
+		requestLayout();
+	}
+
+	public int getShadowSize() {
 		return mShadowSize;
 	}
 
@@ -358,6 +447,29 @@ public class FloatingActionButton extends ImageButton {
 		Color.colorToHSV(color, hsv);
 		hsv[2] *= 1.1f;
 		return Color.HSVToColor(hsv);
+	}
+
+	/**
+	 * Set the drawable that is used as this button's icon.
+	 * @param icon The drawable.
+	 */
+	private Drawable setIcon(Drawable icon){
+		if(icon == null)
+			return null;
+		else{
+			int offset = (int) (mSize * (1-mIconSize));
+			//int offset = 0;
+			final Bitmap bitmap = Bitmap.createBitmap(mSize, mSize,
+					Bitmap.Config.ARGB_8888);
+			final Canvas canvas = new Canvas();
+			canvas.setBitmap(bitmap);
+			Rect fram = new Rect(0, 0, mSize, mSize);
+			icon.setBounds(fram.left + offset, fram.top + offset, fram.right - offset, fram.bottom - offset);
+			icon.draw(canvas);
+			icon.setBounds(fram);
+			//return icon;
+			return new BitmapDrawable(getResources(), bitmap);
+		}
 	}
 
 }

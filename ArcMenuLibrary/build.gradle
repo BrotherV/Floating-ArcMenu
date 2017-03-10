@@ -4,7 +4,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 buildscript {
     group = 'com.github.BrotherV'
-    version = '1.0.6'
+    version = VERSION_NAME
     repositories {
         mavenCentral()
     }
@@ -15,14 +15,14 @@ buildscript {
 }
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOLS_VERSION as String
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
-        versionName "1.0.6"
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME as String
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -40,8 +40,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:design:25.0.1'
+    compile supportDependencies.appCompat
+    compile supportDependencies.design
     testCompile 'junit:junit:4.12'
-    compile files('libs/nineoldandroids-2.4.0.jar')
 }
