@@ -90,7 +90,7 @@ for (int i = 0; i < itemCount; i++) {
 New Features
 ====================
 
-In new version you can add add internarl FloatingActionButton as child for this menu, een user can add fab icon, set size of fab icon programmatically. this sample has shown how to use different method and fab button for Floating-ArcMenu.
+In new version you can add internarl FloatingActionButton as children for this menu, even user can add fab icon and set size of fab icon programmatically. this sample has shown how to use different method and fab button for Floating-ArcMenu.
 ``` java
 private static final int[] ITEM_DRAWABLES = { R.mipmap.facebook_w, R.mipmap.flickr_w, R.mipmap.instagram_w,
 			R.mipmap.github_w };
