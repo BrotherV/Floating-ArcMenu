@@ -87,6 +87,62 @@ for (int i = 0; i < itemCount; i++) {
 }
 ```
 
+New Features:
+In new version you can add add internarl FloatingActionButton as child for this menu, een user can add fab icon, set size of fab icon programmatically. this sample has shown how to use different method and fab button for Floating-ArcMenu.
+``` java
+private static final int[] ITEM_DRAWABLES = { R.mipmap.facebook_w, R.mipmap.flickr_w, R.mipmap.instagram_w,
+			R.mipmap.github_w };
+private String[] str = {"Facebook","Flickr","Instagram","Github"};
+
+//
+//
+
+ArcMenu arcMenu = (ArcMenu) findViewById(R.id.arcMenuX);
+ArcMenu arcMenuY = (ArcMenu) findViewById(R.id.arcMenuY);
+
+arcMenu.setToolTipTextSize(14);  // This method will set tooltip text size
+arcMenu.setMinRadius(104);  //This method will change child radius programmatically
+arcMenu.setArc(175,255);  //This method will change arc of menu
+arcMenu.setToolTipSide(ArcMenu.TOOLTIP_LEFT); //This method will override tooltip direction
+arcMenu.setToolTipTextColor(Color.WHITE); //This method will set tooltip text color
+arcMenu.setToolTipBackColor(Color.parseColor("#88000000"));  //This method will set tooltip background
+arcMenu.setToolTipCorner(2);  //set tooltip corner
+arcMenu.setToolTipPadding(8);  //set tooltip padding
+arcMenu.setColorNormal(getResources().getColor(R.color.colorPrimary));  //set menu button normal color programmatically
+arcMenu.setColorPressed(getResources().getColor(R.color.colorPrimaryDark));  //set menu button press color programmatically
+arcMenu.setColorRipple(getResources().getColor(R.color.colorAccent));  //set menu button ripple color programmatically for api>21
+arcMenu.showTooltip(true); //show tooltip
+arcMenu.setAnim(500,500,ArcMenu.ANIM_MIDDLE_TO_DOWN,ArcMenu.ANIM_MIDDLE_TO_RIGHT,
+		ArcMenu.ANIM_INTERPOLATOR_ANTICIPATE,ArcMenu.ANIM_INTERPOLATOR_ANTICIPATE);
+
+initArcMenu(arcMenu, str, ITEM_DRAWABLES, ITEM_DRAWABLES.length - 1);
+//
+//
+private void initArcMenu(final ArcMenu menu, final String[] str, int[] itemDrawables, int count) {
+	for (int i = 0; i < count; i++) {
+		FloatingActionButton item = new FloatingActionButton(this);  //Use internal fab as a child
+		item.setFabSize(FloatingActionButton.SIZE_MINI);  //set minimum size for fab 42dp
+		item.setShadow(true); //enable to draw shadow
+		item.setTopIcon(itemDrawables[i]); //add icon for fab
+		item.setIconSize(0.75f);  //this method will resize icon of fab (1f>icon size>0.4f)
+		item.setColorNormal(getResources().getColor(R.color.colorPrimary));  //set menu button normal color programmatically
+		item.setColorPressed(getResources().getColor(R.color.colorPrimaryDark));  //set menu button press color programmatically
+		item.setColorRipple(getResources().getColor(R.color.colorAccent));  //set menu button ripple color programmatically
+	
+		final int position = i;
+		menu.addItem(item, str[i], new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(ActivityTooltip.this, str[position],
+						Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+}
+
+```
+![Demo](art/tooltip_fab child.gif)
+
 Usage
 ====================
 
