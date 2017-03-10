@@ -2,7 +2,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.dcendents/android-maven-gradle-plugin.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22android-maven-gradle-plugin%22)
 [![](https://jitpack.io/v/BrotherV/Floating-ArcMenu.svg)](https://jitpack.io/#BrotherV/Floating-ArcMenu)
 # Floating-ArcMenu
-**A prety menu for all application**
+**A prety menu for all applications**
 
 Android floating arc menu which reacts on scrolling events. Becomes visible when an attached target is scrolled up and invisible when scrolled down.
 
