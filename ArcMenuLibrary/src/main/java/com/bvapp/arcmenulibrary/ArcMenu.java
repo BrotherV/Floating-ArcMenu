@@ -47,17 +47,42 @@ import android.view.animation.Interpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.bvapp.arcmenulibrary.anim.AnimationObject;
+import com.bvapp.arcmenulibrary.anim.ViewAnim;
+import com.bvapp.arcmenulibrary.interfaces.ScrollDirectionListener;
+import com.bvapp.arcmenulibrary.util.Util;
+import com.bvapp.arcmenulibrary.widget.ArcLayout;
+import com.bvapp.arcmenulibrary.widget.FloatingActionButton;
+import com.bvapp.arcmenulibrary.widget.ObservableScrollView;
 
 /**
  *
  */
 public class ArcMenu extends RelativeLayout {
+
+	public enum ArcMenuDuration {
+		LENGTH_SHORT(300), LENGTH_LONG(500);
+
+		private int duration;
+
+		ArcMenuDuration(int duration) {
+			this.duration = duration;
+		}
+
+		public int getDuration() {
+			return duration;
+		}
+	}
+
+	public static final int TYPE_LARGE = 0;
+	public static final int TYPE_NORMAL = 1;
+	public static final int TYPE_MINI = 2;
 
 	public static final int     TOP_LEFT	     = 0xF01;
 	public static final int     TOP_RIGHT	    = 0xF02;
@@ -99,6 +124,9 @@ public class ArcMenu extends RelativeLayout {
 	private Context	   mContext;
 	private ArcLayout	   mArcLayout;
 	private FloatingActionButton fabMenu;
+	private ImageView mIcon;
+	private FrameLayout layMenu;
+	private ArcMenuDuration mDuration = ArcMenuDuration.LENGTH_SHORT;
 	private int		 mChildSize;
 	private int		 mToltalChildCount;
 	private int		 mPrimaryChildCount;
@@ -122,18 +150,18 @@ public class ArcMenu extends RelativeLayout {
 	private boolean isShadow;
 	private boolean isMenuIn = true;
 	private boolean isMenuOut;
+	private boolean isChildDeclared;
+	private boolean isMenuClicked;
 
 
 	private Animation menuClickIn =
-			ScaleAndTranslateAnimation.scaleAnimationRelativeToSelf(1.0f,0.8f,1.0f,0.8f,0.5f,0.5f,100,false);
+			AnimationObject.scaleAnimationRelativeToSelf(1.0f,0.8f,1.0f,0.8f,0.5f,0.5f,100,false);
 	private Animation menuClickOut =
-			ScaleAndTranslateAnimation.scaleAnimationRelativeToSelf(0.8f,1.0f,0.8f,1.0f,0.5f,0.5f,100,false);
+			AnimationObject.scaleAnimationRelativeToSelf(0.8f,1.0f,0.8f,1.0f,0.5f,0.5f,100,false);
 
 	private Animation menuTranslateIn;
 	private Animation menuTranslateOut;
 
-	private ArrayList<TextView> mPopupView;
-	private ArrayList<String> mPopupValue;
 	private int mBackgroundColor = Color.TRANSPARENT;
 	private int mPadding;
 	private int mTextSize = 0;
@@ -167,50 +195,32 @@ public class ArcMenu extends RelativeLayout {
 	private void init(Context context) {
 		mContext = context;
 
-		mPopupValue = new ArrayList<>();
-		mPopupView = new ArrayList<>();
-
 		LayoutInflater li = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		li.inflate(R.layout.arc_menu, this);
 
 		mArcLayout = (ArcLayout) findViewById(R.id.arcmenu_item_layout);
 
+		layMenu = (FrameLayout) findViewById(R.id.layArcMenu);
+		mIcon = (ImageView) findViewById(R.id.imgPlusIcon);
 		fabMenu = (FloatingActionButton) findViewById(R.id.fabArcMenu);
 
 		fabMenu.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				if(menuAnim && mArcLayout.isAnimDone()){
-					fabMenu.startAnimation(menuClickIn);
+					ViewAnim.shrinkExpandAnimation(fabMenu);
+					if(isMenuClicked){
+						isMenuClicked = false;
+						ViewAnim.rotateAnimation(mIcon, false);
+					}else{
+						isMenuClicked = true;
+						ViewAnim.rotateAnimation(mIcon, true);
+					}
 				}
 				if(mArcLayout.isAnimDone()){
 					mArcLayout.switchState(true);
 				}
-			}
-		});
-
-		menuClickIn.setAnimationListener(new AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
-
-			}
-
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				fabMenu.startAnimation(menuClickOut);
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-
-			}
-		});
-
-		mArcLayout.setOnMenuItemOpenClose(new ArcLayout.OnMenuItemOpenClose() {
-			@Override
-			public void menuStatus(boolean s) {
-
 			}
 		});
 	}
@@ -225,16 +235,16 @@ public class ArcMenu extends RelativeLayout {
 			TypedArray b = getContext().obtainStyledAttributes(attrs,
 					R.styleable.ArcMenu);
 
-			int mType = b.getInt(R.styleable.ArcMenu_menuType, FloatingActionButton.TYPE_NORMAL);
+			int mType = b.getInt(R.styleable.ArcMenu_menuType, TYPE_NORMAL);
 			int defaultMenuSize = 0;
 			switch (mType){
-				case FloatingActionButton.TYPE_LARGE:
+				case TYPE_LARGE:
 					defaultMenuSize = getResources().getDimensionPixelSize(R.dimen.fab_size_large);
 					break;
-				case FloatingActionButton.TYPE_NORMAL:
+				case TYPE_NORMAL:
 					defaultMenuSize = getResources().getDimensionPixelSize(R.dimen.fab_size_normal);
 					break;
-				case FloatingActionButton.TYPE_MINI:
+				case TYPE_MINI:
 					defaultMenuSize = getResources().getDimensionPixelSize(R.dimen.fab_size_mini);
 					break;
 				default:
@@ -242,24 +252,30 @@ public class ArcMenu extends RelativeLayout {
 			}
 
 			int color = b.getColor(R.styleable.ArcMenu_menuNormalColor, Color.BLUE);
-			fabMenu.setColorNormal(color);
-
-			color = b.getColor(R.styleable.ArcMenu_menuPressedColor, color);
-			fabMenu.setColorPressed(color);
-
-			color = b.getColor(R.styleable.ArcMenu_menuRippleColor, Color.BLUE);
-			fabMenu.setColorRipple(color);
+			fabMenu.setBackgroundColor(color);
 
 			isShadow = b.getBoolean(R.styleable.ArcMenu_menuShadowElevation,false);
-			mShadowElevation = fabMenu.getShadowSize();
-			if (isShadow) {
-				//defaultMenuSize += mShadowElevation * 2;
-				fabMenu.setShadow(true);
-				mMenuMargin = mShadowElevation;
-			}else{
-				fabMenu.setShadow(false);
-				mMenuMargin = (int) dpToPx(8);
+			fabMenu.setShadow(isShadow);
+
+			mMenuSize = defaultMenuSize;
+			fabMenu.setSize(defaultMenuSize);
+			mArcLayout.setMenuSize(isShadow ? mMenuSize : mMenuSize/2);
+
+			Drawable drawable = b.getDrawable(R.styleable.ArcMenu_menuImage);
+			if (drawable != null) {
+				mIcon.setVisibility(View.GONE);
+				fabMenu.setIcon(drawable);
+			}else {
+				if(isShadow){
+					FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mIcon
+							.getLayoutParams();
+					int s = (int) (fabMenu.getShadowSize()/2);
+					params.bottomMargin = s;
+					mIcon.setLayoutParams(params);
+				}
 			}
+			//mMenuMargin = mShadowElevation /2 ;
+			mMenuMargin = (int) dpToPx(4);
 
 			mMenuGravity = b.getInt(R.styleable.ArcMenu_menuGravity,
 					CENTER);
@@ -270,16 +286,6 @@ public class ArcMenu extends RelativeLayout {
 					R.styleable.ArcMenu_menuChildSize, defaultChildSize);
 			mArcLayout.setChildSize(mChildSize);
 			mArcLayout.setTextViewSize(mChildSize * 2, mChildSize/2);
-
-			mMenuSize = defaultMenuSize;
-			fabMenu.setFabType(mType);
-			mArcLayout.setMenuSize(mMenuSize);
-
-			Drawable drawable = b.getDrawable(R.styleable.ArcMenu_menuImage);
-			if (drawable != null) {
-				fabMenu.setTopIcon(drawable, defaultMenuSize);
-				//fabMenu.setImageDrawable(drawable);
-			}
 
 			mMarginBottom = b.getDimensionPixelSize(R.styleable.ArcMenu_menuMarginBottom, 0);
 			mMarginTop = b.getDimensionPixelSize(R.styleable.ArcMenu_menuMarginTop, 0);
@@ -314,7 +320,7 @@ public class ArcMenu extends RelativeLayout {
 	 * @param listener
 	 */
 	public void addItem(View item , String tootTip, OnClickListener listener) {
-		mPrimaryChildCount++;
+		isChildDeclared = true;
 		mArcLayout.addView(item);
 		mArcLayout.addView(getContentView(tootTip));
 		item.setOnClickListener(getItemClickListener(listener));
@@ -412,7 +418,10 @@ public class ArcMenu extends RelativeLayout {
 							bindItemAnimation(item, false, 200);
 						}
 					}
-
+					if(isMenuClicked){
+						isMenuClicked = false;
+						ViewAnim.rotateAnimation(mIcon, false);
+					}
 					mArcLayout.invalidate();
 					mArcLayout.setExpandDone(false);
 					if (listener != null) {
@@ -536,11 +545,11 @@ public class ArcMenu extends RelativeLayout {
 	}
 
 	private void setMenuParam(int left, int top, int right, int bottom, int gravity){
-		FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) fabMenu
+		FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) layMenu
 				.getLayoutParams();
 		params.setMargins(left, top, right, bottom);
 		params.gravity = gravity;
-		fabMenu.setLayoutParams(params);
+		layMenu.setLayoutParams(params);
 	}
 
 	/**
@@ -563,20 +572,28 @@ public class ArcMenu extends RelativeLayout {
 	/**
 	 *
 	 */
-	private void clickMenu(){
+	public boolean isOpen(){
 		if(mArcLayout.isExpanded()){
-			mArcLayout.switchState(!mArcLayout.isExpanded());
+			return true;
 		}
+		return false;
+	}
+
+	public boolean isClose(){
+		if(!mArcLayout.isExpanded()){
+			return true;
+		}
+		return false;
 	}
 
 	/**
 	 *
-	 * @return
+	 * @return menu status, true = open, false = close
 	 */
 	@Override
 	public boolean performClick() {
-		clickMenu();
-		return false;
+		mArcLayout.switchState(!mArcLayout.isExpanded());
+		return mArcLayout.isExpanded();
 	}
 
 	public void setMinRadius(int radius) {
@@ -588,6 +605,27 @@ public class ArcMenu extends RelativeLayout {
 	}
 
 	/**
+	 * Sets the duration of this {@link ArcMenu}. See
+	 * {@link ArcMenuDuration} for available options
+	 *
+	 * @param duration
+	 */
+	public void setDuration(ArcMenuDuration duration) {
+		mDuration = duration;
+		mArcLayout.setDuration(mDuration.getDuration());
+	}
+
+	/**
+	 * Sets a custom duration of this {@link ArcMenu}
+	 *
+	 * @param duration custom duration. Value must be greater than 0 or it will be ignored
+	 */
+	public void setDuration(int duration) {
+		int mCustomDuration = duration > 100 ? duration : 100;
+		mArcLayout.setDuration(duration);
+	}
+
+	/**
 	 *
 	 * @param fromDegree
 	 * @param toDegree
@@ -596,17 +634,28 @@ public class ArcMenu extends RelativeLayout {
 		mArcLayout.setArc(fromDegree,toDegree);
 	}
 
+	public void setChildSize(int size) {
+		mArcLayout.setChildSize(size);
+	}
+
+
+	/**
+	 *
+	 * @param colorResId
+	 */
+	public void setColorNormalResId(@ColorRes int colorResId) {
+		setColorNormal(getColor(colorResId));
+	}
+
 	public void setColorNormal(int color) {
-		fabMenu.setColorNormal(color);
+		fabMenu.setBackgroundColor(color);
 	}
 
-	public void setColorPressed(int color) {
-		fabMenu.setColorRipple(color);
+	public int getColor(@ColorRes int res) {
+		return getResources().getColor(res);
 	}
 
-	public void setColorRipple(int color) {
-		fabMenu.setColorRipple(color);
-	}
+
 	/**
 	 *
 	 * @param side
@@ -631,6 +680,11 @@ public class ArcMenu extends RelativeLayout {
 		mCornerRadius = (int) dpToPx(corner);
 	}
 
+	/**
+	 *
+	 * @param w
+	 * @param h
+	 */
 	private void setArcLayoutTextSize(int w, int h){
 		mArcLayout.setTextSize(w, h);
 	}
@@ -659,26 +713,26 @@ public class ArcMenu extends RelativeLayout {
 		switch(mAnimType){
 			case ANIM_BOTTOM_TO_DOWN:
 				menuTranslateOut =
-						ScaleAndTranslateAnimation.translateAnimationRelativeToParent(0.0f,0.0f,0.0f,0.2f,
+						AnimationObject.translateAnimationRelativeToParent(0.0f,0.0f,0.0f,0.2f,
 								new DecelerateInterpolator(),mAnimDurationOut,true);
 				menuTranslateIn =
-						ScaleAndTranslateAnimation.translateAnimationRelativeToParent(0.0f,0.0f,2.0f,0.0f,
+						AnimationObject.translateAnimationRelativeToParent(0.0f,0.0f,2.0f,0.0f,
 								new DecelerateInterpolator(),mAnimDurationIn,true);
 				break;
 			case ANIM_MIDDLE_TO_DOWN:
 				menuTranslateOut =
-						ScaleAndTranslateAnimation.translateAnimationRelativeToParent(0.0f,0.0f,0.0f,0.7f,
+						AnimationObject.translateAnimationRelativeToParent(0.0f,0.0f,0.0f,0.7f,
 								new DecelerateInterpolator(),mAnimDurationOut,true);
 				menuTranslateIn =
-						ScaleAndTranslateAnimation.translateAnimationRelativeToParent(0.0f,0.0f,7.0f,0.0f,
+						AnimationObject.translateAnimationRelativeToParent(0.0f,0.0f,7.0f,0.0f,
 								new DecelerateInterpolator(),mAnimDurationIn,true);
 				break;
 			case ANIM_TOP_TO_UP:
 				menuTranslateOut =
-						ScaleAndTranslateAnimation.translateAnimationRelativeToParent(0.0f,0.0f,0.0f,-0.2f,
+						AnimationObject.translateAnimationRelativeToParent(0.0f,0.0f,0.0f,-0.2f,
 								new DecelerateInterpolator(),mAnimDurationOut,true);
 				menuTranslateIn =
-						ScaleAndTranslateAnimation.translateAnimationRelativeToParent(0.0f,0.0f,-0.2f,0.0f,
+						AnimationObject.translateAnimationRelativeToParent(0.0f,0.0f,-0.2f,0.0f,
 								new DecelerateInterpolator(),mAnimDurationIn,true);
 				break;
 		}
@@ -817,7 +871,7 @@ public class ArcMenu extends RelativeLayout {
 		}
 
 		menuTranslateOut =
-				ScaleAndTranslateAnimation.translateAnimationRelativeToParent(fromX,toX,fromY,toY,
+				AnimationObject.translateAnimationRelativeToParent(fromX,toX,fromY,toY,
 						out,mAnimDurationOut,true);
 
 		switch(directionIn){
@@ -875,7 +929,7 @@ public class ArcMenu extends RelativeLayout {
 		}
 
 		menuTranslateIn =
-				ScaleAndTranslateAnimation.translateAnimationRelativeToParent(fromX,toX,fromY,toY,
+				AnimationObject.translateAnimationRelativeToParent(fromX,toX,fromY,toY,
 						in,mAnimDurationIn,true);
 	}
 

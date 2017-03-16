@@ -4,7 +4,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 buildscript {
     group = 'com.github.BrotherV'
-    version = VERSION_NAME
+    version = "1.0.8"
     repositories {
         mavenCentral()
     }
@@ -15,14 +15,14 @@ buildscript {
 }
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION as int
-    buildToolsVersion BUILD_TOOLS_VERSION as String
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
-        minSdkVersion MIN_SDK_VERSION as int
-        targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode VERSION_CODE as int
-        versionName VERSION_NAME as String
+        minSdkVersion 10
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0.8"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -36,11 +36,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile supportDependencies.appCompat
-    compile supportDependencies.design
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
     testCompile 'junit:junit:4.12'
 }

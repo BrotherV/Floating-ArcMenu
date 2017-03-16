@@ -6,19 +6,32 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <com.bvapp.arcmenulibrary.ArcLayout
+    <com.bvapp.arcmenulibrary.widget.ArcLayout
         android:id="@+id/arcmenu_item_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-    </com.bvapp.arcmenulibrary.ArcLayout>
+    </com.bvapp.arcmenulibrary.widget.ArcLayout>
 
 
-    <com.bvapp.arcmenulibrary.FloatingActionButton
-        android:id="@+id/fabArcMenu"
+    <FrameLayout
+        android:id="@+id/layArcMenu"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="12dp"/>
+        android:layout_height="wrap_content">
+
+        <com.bvapp.arcmenulibrary.widget.FloatingActionButton
+            android:id="@+id/fabArcMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/imgPlusIcon"
+            android:layout_width="@dimen/fab_plus_width"
+            android:layout_height="@dimen/fab_plus_width"
+            android:src="@drawable/plus"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
 
 </FrameLayout>

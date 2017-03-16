@@ -1,8 +1,5 @@
 <resources>
     <!-- Default menu dimens,-->
-    <dimen name="fab_size_large">64dp</dimen>
-    <dimen name="fab_size_normal">56dp</dimen>
-    <dimen name="fab_size_mini">42dp</dimen>
     <dimen name="menu_child_size">42dp</dimen>
     <dimen name="menu_shadow_elevation">2dp</dimen>
     <dimen name="menu_shadow_border">0dp</dimen>
@@ -10,7 +7,9 @@
     <dimen name="menu_scroll_threshold">4dp</dimen>
 
     <!-- Default fab dimens,-->
-    <dimen name="fab_shadow_size">12dp</dimen>
-    <dimen name="fab_elevation_lollipop">8dp</dimen>
-    <dimen name="fab_press_translation_z">6dp</dimen>
+    <dimen name="fab_size_large">64dp</dimen>
+    <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_size_mini">48dp</dimen>
+    <dimen name="fab_plus_width">16dp</dimen>
+    <dimen name="fab_plus_height">6dp</dimen>
 </resources>

@@ -2,6 +2,8 @@ package com.bvapp.arcmenulibrary;
 
 import android.widget.ScrollView;
 
+import com.bvapp.arcmenulibrary.widget.ObservableScrollView;
+
 /**
  * Created by Mohsen on 1/20/2017.
  */

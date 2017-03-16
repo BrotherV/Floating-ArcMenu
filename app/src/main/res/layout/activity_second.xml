@@ -19,10 +19,7 @@
         arc:menuChildAnim="false"
         arc:menuShadowElevation="true"
         arc:menuNormalColor="@color/colorPrimary"
-        arc:menuImage="@mipmap/tools"
         android:layout_gravity="bottom|right"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="6dp"
         >
     </com.bvapp.arcmenulibrary.ArcMenu>
 
@@ -37,7 +34,7 @@
         arc:menuClickAnim="true"
         arc:menuChildAnim="false"
         arc:menuShadowElevation="true"
-        arc:menuNormalColor="@color/design_textinput_error_color_light"
+        arc:menuNormalColor="@android:color/holo_red_light"
         arc:menuImage="@mipmap/tools"
         android:layout_gravity="center_vertical|left">
     </com.bvapp.arcmenulibrary.ArcMenu>
