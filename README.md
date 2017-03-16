@@ -87,8 +87,8 @@ for (int i = 0; i < itemCount; i++) {
 
 ## New Features in v1.0.8.2
 New plus marker added to menu, if user doesn't want to set icon for menu it will add plus marker automatically for menu.
-![](https://github.com/BrotherV/Floating-ArcMenu/tree/master/img1.jpg)
-![](https://github.com/BrotherV/Floating-ArcMenu/tree/master/img2.jpg)
+![Image](art/img1.png)
+![Image](art/img2.png)
 
 **New method:
 ``` java
