@@ -1,18 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-//group = 'com.github.BrotherV'
 
-buildscript {
-    group = 'com.github.BrotherV'
-    version = VERSION_NAME
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-    }
-}
+group = 'com.github.BrotherV'
+version = VERSION_NAME
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
@@ -23,9 +13,7 @@ android {
         targetSdkVersion TARGET_SDK_VERSION as int
         versionCode VERSION_CODE as int
         versionName VERSION_NAME as String
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {

@@ -1,2 +1,1 @@
-include ':app', ':arcmenulibrary'
-rootProject.name = 'artifact'
+include ':app', ':ArcMenuLibrary'
