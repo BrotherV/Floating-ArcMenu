@@ -15,9 +15,27 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    //Version
+    supportLibrary = '25.0.1'
+    compileSdkVersion = 25
+    buildToolsVersion = "25.0.1"
+    minSdkVersion = 10
+    targetSdkVersion = 24
+
+    junitVersion = "4.12"
+
+    //Support Libraries dependencies
+    supportDependencies = [
+            recyclerview     :         "com.android.support:recyclerview-v7:${supportLibrary}",
+            appCompat        :         "com.android.support:appcompat-v7:${supportLibrary}",
+    ]
 }
