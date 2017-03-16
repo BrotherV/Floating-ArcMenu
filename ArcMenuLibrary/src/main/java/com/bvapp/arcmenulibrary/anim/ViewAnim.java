@@ -2,7 +2,6 @@ package com.bvapp.arcmenulibrary.anim;
 
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.BounceInterpolator;
 
 /**
  * Created by Mohsen on 3/15/2017.
