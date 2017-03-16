@@ -42,8 +42,6 @@ for the mini menu button.
         arc:menuNormalColor="@color/colorAccent"
         arc:menuImage="@mipmap/tools"
         android:layout_gravity="center_horizontal|right"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="6dp"
         >
     </com.bvapp.arcmenulibrary.ArcMenu>
 </FrameLayout>
@@ -87,10 +85,31 @@ for (int i = 0; i < itemCount; i++) {
 }
 ```
 
-New Features
-====================
+## New Features in v1.0.8.2
+New plus marker added to menu, if user doesn't want to set icon for menu it will add plus marker automatically for menu.
+![](https://github.com/BrotherV/Floating-ArcMenu/tree/master/img1.jpg)
+![](https://github.com/BrotherV/Floating-ArcMenu/tree/master/img2.jpg)
 
-In new version you can add internarl FloatingActionButton as children for this menu, even user can add fab icon and set size of fab icon programmatically. this sample has shown how to use different method and fab button for Floating-ArcMenu.
+**New method:
+``` java
+
+ArcMenu arcMenu = (ArcMenu) findViewById(R.id.arcMenuX);
+arcMenu.setToolTipTextSize(14);  // This method will set tooltip text size
+arcMenu.setMinRadius(104);  //This method will change child radius programmatically
+arcMenu.setArc(175,255);  //This method will change arc of menu
+arcMenu.setToolTipSide(ArcMenu.TOOLTIP_LEFT); //This method will override tooltip direction
+arcMenu.setToolTipTextColor(Color.WHITE); //This method will set tooltip text color
+arcMenu.setToolTipBackColor(Color.parseColor("#88000000"));  //This method will set tooltip background color
+arcMenu.setToolTipCorner(2);  //set tooltip corner
+arcMenu.setToolTipPadding(8);  //set tooltip padding
+arcMenu.setColorNormal(getResources().getColor(R.color.colorPrimary));  //set menu button normal color programmatically
+arcMenu.showTooltip(true); // This method will enable tooltip to show
+arcMenu.isOpen(); // This method will return menu status, if it's open then it will return true.
+arcMenu.isClose(); // This method will return menu status, if it's close then it will return true.
+arcMenu.performClick(); // This method will return menu status and you can open or close menu programmatically.
+
+```
+In this version new fab added as internarl FloatingActionButton and you can add it as children for this menu, also user can add fab icon programmatically. this sample has shown how to use different method and fab button for Floating-ArcMenu.
 ``` java
 private static final int[] ITEM_DRAWABLES = { R.mipmap.facebook_w, R.mipmap.flickr_w, R.mipmap.instagram_w,
 			R.mipmap.github_w };
@@ -111,8 +130,6 @@ arcMenu.setToolTipBackColor(Color.parseColor("#88000000"));  //This method will 
 arcMenu.setToolTipCorner(2);  //set tooltip corner
 arcMenu.setToolTipPadding(8);  //set tooltip padding
 arcMenu.setColorNormal(getResources().getColor(R.color.colorPrimary));  //set menu button normal color programmatically
-arcMenu.setColorPressed(getResources().getColor(R.color.colorPrimaryDark));  //set menu button press color programmatically
-arcMenu.setColorRipple(getResources().getColor(R.color.colorAccent));  //set menu button ripple color programmatically for api>21
 arcMenu.showTooltip(true); //show tooltip
 arcMenu.setAnim(500,500,ArcMenu.ANIM_MIDDLE_TO_DOWN,ArcMenu.ANIM_MIDDLE_TO_RIGHT,
 		ArcMenu.ANIM_INTERPOLATOR_ANTICIPATE,ArcMenu.ANIM_INTERPOLATOR_ANTICIPATE);
@@ -123,14 +140,12 @@ initArcMenu(arcMenu, str, ITEM_DRAWABLES, ITEM_DRAWABLES.length - 1);
 private void initArcMenu(final ArcMenu menu, final String[] str, int[] itemDrawables, int count) {
 	for (int i = 0; i < count; i++) {
 		FloatingActionButton item = new FloatingActionButton(this);  //Use internal fab as a child
-		item.setFabSize(FloatingActionButton.SIZE_MINI);  //set minimum size for fab 42dp
+		item.setSize(FloatingActionButton.SIZE_MINI);  //set minimum size for fab 42dp
 		item.setShadow(true); //enable to draw shadow
-		item.setTopIcon(itemDrawables[i]); //add icon for fab
-		item.setIconSize(0.75f);  //this method will resize icon of fab (1f>icon size>0.4f)
-		item.setColorNormal(getResources().getColor(R.color.colorPrimary));  //set menu button normal color programmatically
-		item.setColorPressed(getResources().getColor(R.color.colorPrimaryDark));  //set menu button press color programmatically
-		item.setColorRipple(getResources().getColor(R.color.colorAccent));  //set menu button ripple color programmatically
-	
+		item.setIcon(itemDrawables[i]); //add icon for fab
+		item.setBackgroundColor(getResources().getColor(R.color.colorPrimary));  //set menu button normal color programmatically
+	        menu.setChildSize(item.getIntrinsicHeight()); // fit menu child size exactly same as fab 
+		
 		final int position = i;
 		menu.addItem(item, str[i], new View.OnClickListener() {
 			@Override
@@ -160,11 +175,11 @@ allprojects {
 Step 2. Add the dependency
 ```Groovy
 dependencies {
-	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.7'
+	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.8.2'
 	}
 ```
 # Credits
-I used [ArcMenu by Capricorn](https://github.com/daCapricorn/ArcMenu) and [FloatingActionButton](https://github.com/makovkastar/FloatingActionButton) 
+I used [ArcMenu by Capricorn](https://github.com/daCapricorn/ArcMenu) and [FloatingActionButton](https://github.com/rey5137/material) 
 libraries as a base for development.
 
 # License
