@@ -6,7 +6,6 @@
 
 Android floating arc menu which reacts on scrolling events. Becomes visible when an attached target is scrolled up and invisible when scrolled down.
 
-![Demo](art/multiple menu.gif)
 ![Demo](art/tooltip.gif)
 ![Demo](art/listview.gif)
 ![Demo](art/recycler.gif)
@@ -107,13 +106,13 @@ arcMenu.showTooltip(true); // This method will enable tooltip to show
 arcMenu.isOpen(); // This method will return menu status, if it's open then it will return true.
 arcMenu.isClose(); // This method will return menu status, if it's close then it will return true.
 arcMenu.performClick(); // This method will return menu status and you can open or close menu programmatically.
+arcMenu.setDuration(600); // This method will change time of animation
 
 ```
 In this version new fab added as internarl FloatingActionButton and you can add it as children for this menu, also user can add fab icon programmatically. this sample has shown how to use different method and fab button for Floating-ArcMenu.
 ``` java
-private static final int[] ITEM_DRAWABLES = { R.mipmap.facebook_w, R.mipmap.flickr_w, R.mipmap.instagram_w,
-			R.mipmap.github_w };
-private String[] str = {"Facebook","Flickr","Instagram","Github"};
+private static final int[] ITEM_DRAWABLES = { R.mipmap.facebook_w, R.mipmap.flickr_w, R.mipmap.instagram_w };
+private String[] str = {"Facebook","Flickr","Instagram"};
 
 //
 //
@@ -121,24 +120,23 @@ private String[] str = {"Facebook","Flickr","Instagram","Github"};
 ArcMenu arcMenu = (ArcMenu) findViewById(R.id.arcMenuX);
 ArcMenu arcMenuY = (ArcMenu) findViewById(R.id.arcMenuY);
 
-arcMenu.setToolTipTextSize(14);  // This method will set tooltip text size
-arcMenu.setMinRadius(104);  //This method will change child radius programmatically
-arcMenu.setArc(175,255);  //This method will change arc of menu
-arcMenu.setToolTipSide(ArcMenu.TOOLTIP_LEFT); //This method will override tooltip direction
-arcMenu.setToolTipTextColor(Color.WHITE); //This method will set tooltip text color
-arcMenu.setToolTipBackColor(Color.parseColor("#88000000"));  //This method will set tooltip background
+arcMenu.setToolTipTextSize(14);
+arcMenu.setMinRadius(104);
+arcMenu.setArc(175,255);
+arcMenu.setToolTipSide(ArcMenu.TOOLTIP_LEFT);
+arcMenu.setToolTipTextColor(Color.WHITE);
+arcMenu.setToolTipBackColor(Color.parseColor("#88000000"));
 arcMenu.setToolTipCorner(2);  //set tooltip corner
 arcMenu.setToolTipPadding(8);  //set tooltip padding
-arcMenu.setColorNormal(getResources().getColor(R.color.colorPrimary));  //set menu button normal color programmatically
-arcMenu.showTooltip(true); //show tooltip
-arcMenu.setAnim(500,500,ArcMenu.ANIM_MIDDLE_TO_DOWN,ArcMenu.ANIM_MIDDLE_TO_RIGHT,
-		ArcMenu.ANIM_INTERPOLATOR_ANTICIPATE,ArcMenu.ANIM_INTERPOLATOR_ANTICIPATE);
+arcMenu.setColorNormal(getResources().getColor(R.color.colorPrimary));
+arcMenu.showTooltip(true);
+arcMenu.setDuration(600);
 
-initArcMenu(arcMenu, str, ITEM_DRAWABLES, ITEM_DRAWABLES.length - 1);
+initArcMenu(arcMenu, str, ITEM_DRAWABLES);
 //
 //
-private void initArcMenu(final ArcMenu menu, final String[] str, int[] itemDrawables, int count) {
-	for (int i = 0; i < count; i++) {
+private void initArcMenu(final ArcMenu menu, final String[] str, int[] itemDrawables) {
+	for (int i = 0; i < itemDrawables.length ; i++) {
 		FloatingActionButton item = new FloatingActionButton(this);  //Use internal fab as a child
 		item.setSize(FloatingActionButton.SIZE_MINI);  //set minimum size for fab 42dp
 		item.setShadow(true); //enable to draw shadow
@@ -158,7 +156,6 @@ private void initArcMenu(final ArcMenu menu, final String[] str, int[] itemDrawa
 }
 
 ```
-![Demo](art/tooltip_fab child.gif)
 
 Usage
 ====================
