@@ -84,12 +84,14 @@ for (int i = 0; i < itemCount; i++) {
 }
 ```
 
-## New Features in v1.0.8.2
+### New Features in v1.0.8.2
+
 New plus marker added to menu, if user doesn't want to set icon for menu it will add plus marker automatically for menu.
 ![Image](art/img1.png)
 ![Image](art/img2.png)
 
-**New method:
+### New methods:
+
 ``` java
 
 ArcMenu arcMenu = (ArcMenu) findViewById(R.id.arcMenuX);
@@ -157,8 +159,7 @@ private void initArcMenu(final ArcMenu menu, final String[] str, int[] itemDrawa
 
 ```
 
-Usage
-====================
+## Usage
 
 Step 1. Add it in your root build.gradle at the end of repositories:
 ```Groovy
@@ -175,11 +176,11 @@ dependencies {
 	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.8.2'
 	}
 ```
-# Credits
+## Credits
 I used [ArcMenu by Capricorn](https://github.com/daCapricorn/ArcMenu) and [FloatingActionButton](https://github.com/rey5137/material) 
 libraries as a base for development.
 
-# License
+## License
 ```
 Copyright 2017 BrotherV
 
