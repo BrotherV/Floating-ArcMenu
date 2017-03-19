@@ -45,6 +45,7 @@ public class ActivityTooltip extends AppCompatActivity {
 		arcMenuY.setToolTipPadding(8);
 		arcMenuY.setColorNormal(getResources().getColor(R.color.colorPrimary));
 		arcMenuY.setDuration(600);
+		arcMenuY.setIcon(R.mipmap.facebook_w, R.mipmap.github_w);
 		arcMenuY.showTooltip(true);
 
 		initArcMenu(arcMenu, str, ITEM_DRAWABLES, ITEM_DRAWABLES.length - 1);

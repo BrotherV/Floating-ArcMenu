@@ -20,12 +20,16 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -168,6 +172,13 @@ public class ArcMenu extends RelativeLayout {
 	private int mCornerRadius;
 	private ColorStateList mTextColor;
 	private Typeface mTypeface = Typeface.DEFAULT;
+
+	private Drawable iconClose;
+	private Drawable iconOpen;
+	private boolean isDoubleIconSet;
+	private boolean isOneIconSet;
+
+	private OnClickListener clickListener;
 	/**
 	 *
 	 * @param context
@@ -209,13 +220,25 @@ public class ArcMenu extends RelativeLayout {
 			@Override
 			public void onClick(View view) {
 				if(menuAnim && mArcLayout.isAnimDone()){
+					if(clickListener != null){
+						clickListener.onClick(fabMenu);
+					}
 					ViewAnim.shrinkExpandAnimation(fabMenu);
+
 					if(isMenuClicked){
 						isMenuClicked = false;
-						ViewAnim.rotateAnimation(mIcon, false);
+						if(!isDoubleIconSet && !isOneIconSet){
+							ViewAnim.rotateAnimation(mIcon, false);
+						}else if(isDoubleIconSet && !isOneIconSet){
+							fabMenu.setIcon(iconClose, true);
+						}
 					}else{
 						isMenuClicked = true;
-						ViewAnim.rotateAnimation(mIcon, true);
+						if(!isDoubleIconSet && !isOneIconSet){
+							ViewAnim.rotateAnimation(mIcon, true);
+						}else if(isDoubleIconSet && !isOneIconSet){
+							fabMenu.setIcon(iconOpen, true);
+						}
 					}
 				}
 				if(mArcLayout.isAnimDone()){
@@ -420,7 +443,11 @@ public class ArcMenu extends RelativeLayout {
 					}
 					if(isMenuClicked){
 						isMenuClicked = false;
-						ViewAnim.rotateAnimation(mIcon, false);
+						if(!isDoubleIconSet && !isOneIconSet){
+							ViewAnim.rotateAnimation(mIcon, false);
+						}else if(isDoubleIconSet && !isOneIconSet){
+							fabMenu.setIcon(iconClose, true);
+						}
 					}
 					mArcLayout.invalidate();
 					mArcLayout.setExpandDone(false);
@@ -586,6 +613,9 @@ public class ArcMenu extends RelativeLayout {
 		return false;
 	}
 
+	public void setOnClickListener(OnClickListener listener){
+		clickListener = listener;
+	}
 	/**
 	 *
 	 * @return menu status, true = open, false = close
@@ -641,8 +671,58 @@ public class ArcMenu extends RelativeLayout {
 
 	/**
 	 *
-	 * @param colorResId
 	 */
+	public void setDefaultIcon(){
+		isDoubleIconSet = false;
+		isOneIconSet = true;
+		mIcon.setVisibility(VISIBLE);
+	}
+
+	public void setIcon(@DrawableRes int iconClose, @DrawableRes int iconOpen) {
+		try{
+			Bitmap b = new BitmapFactory().decodeResource(getResources(), iconClose);
+			Drawable c1 = new BitmapDrawable(getResources(), b);
+			b = new BitmapFactory().decodeResource(getResources(), iconOpen);
+			Drawable c2 = new BitmapDrawable(getResources(), b);
+			setIcon(c1, c2);
+		}catch (Exception e){
+			e.printStackTrace();
+			isDoubleIconSet = false;
+		}
+	}
+
+	public void setIcon(Drawable iconClose, Drawable iconOpen) {
+		if(iconClose != null && iconOpen != null){
+			this.iconClose = iconClose;
+			this.iconOpen = iconOpen;
+			fabMenu.setIcon(this.iconClose);
+			mIcon.setVisibility(GONE);
+			isDoubleIconSet = true;
+			isOneIconSet = false;
+		}
+	}
+
+	public void setIcon(@DrawableRes int iconClose) {
+		try{
+			Bitmap b = new BitmapFactory().decodeResource(getResources(), iconClose);
+			Drawable c = new BitmapDrawable(getResources(), b);
+			setIcon(c);
+		}catch (Exception e){
+			e.printStackTrace();
+			isOneIconSet = false;
+		}
+	}
+
+	public void setIcon(Drawable iconClose) {
+		if(iconClose != null){
+			this.iconClose = iconClose;
+			fabMenu.setIcon(this.iconClose);
+			mIcon.setVisibility(GONE);
+			isDoubleIconSet = false;
+			isOneIconSet = true;
+		}
+	}
+
 	public void setColorNormalResId(@ColorRes int colorResId) {
 		setColorNormal(getColor(colorResId));
 	}
