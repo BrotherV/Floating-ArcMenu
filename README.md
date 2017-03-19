@@ -88,8 +88,8 @@ for (int i = 0; i < itemCount; i++) {
 In this version user will able to access OnClickListener and user can change menu icon programmatically. een user will able to add 2 Drawable icon, one for close form and one for open and menu automatically change the icon by order.
 ![Demo](art/double_icon.gif)
 ``` java
-arcMenu.setIcon(R.mipmap.facebook_w, R.mipmap.github_w); // by adding drawablr file menu will able change icons by order.
-arcMenuY.setDefaultIcon(); // This method will disable up line and will set plus marker on the menu.
+arcMenu.setIcon(R.mipmap.facebook_w, R.mipmap.github_w); // by adding drawable file ,menu will able to change icons by order.
+arcMenu.setDefaultIcon(); // This method will disable up line and will set plus marker on the menu.
 ```
 
 ### New Features in v1.0.8.2
