@@ -85,7 +85,7 @@ for (int i = 0; i < itemCount; i++) {
 ```
 ### New Features in v1.0.8.7
 
-In this version user will able to access OnClickListener and user can change menu icon programmatically. een user will able to add 2 Drawable icon, one for close form and one for open and menu automatically change the icon by order.
+In this version user will able to access OnClickListener and user can change menu icon programmatically. even user will able to add 2 Drawable icons, one for close form and one for open and menu automatically change the icons by order.
 ![Demo](art/double_icon.gif)
 ``` java
 arcMenu.setIcon(R.mipmap.facebook_w, R.mipmap.github_w); // by adding drawable file ,menu will able to change icons by order.
