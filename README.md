@@ -73,6 +73,8 @@ menu.setAnim(300,300,ArcMenu.ANIM_MIDDLE_TO_RIGHT,ArcMenu.ANIM_MIDDLE_TO_RIGHT,
 final int itemCount = ITEM_DRAWABLES.length;
 for (int i = 0; i < itemCount; i++) {
 	FloatingActionButton item = new FloatingActionButton(this);  // Use internal FAB as child
+	// ********* import com.bvapp.arcmenulibrary.widget.FloatingActionButton; *********
+	
 	item.setSize(FloatingActionButton.SIZE_MINI); // set initial size for child, it will create fab first
 	item.setIcon(itemDrawables[i]); // It will set fab icon from your resources which related to 'ITEM_DRAWABLES'
 	item.setBackgroundColor(getResources().getColor(R.color.colorPrimary)); // it will set fab child's color
