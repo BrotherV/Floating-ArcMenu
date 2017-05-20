@@ -72,14 +72,18 @@ menu.setAnim(300,300,ArcMenu.ANIM_MIDDLE_TO_RIGHT,ArcMenu.ANIM_MIDDLE_TO_RIGHT,
 
 final int itemCount = ITEM_DRAWABLES.length;
 for (int i = 0; i < itemCount; i++) {
-	ImageView item = new ImageView(this);
-	item.setImageResource(MenuItem.ITEM_DRAWABLES[i]);
- 	final int position = i;
-	menu.addItem(item, STR[i], new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-        //You can access child click in here
-			}
+	FloatingActionButton item = new FloatingActionButton(this);  // Use internal FAB as child
+	item.setSize(FloatingActionButton.SIZE_MINI); // set initial size for child, it will create fab first
+	item.setIcon(itemDrawables[i]); // It will set fab icon from your resources which related to 'ITEM_DRAWABLES'
+	item.setBackgroundColor(getResources().getColor(R.color.colorPrimary)); // it will set fab child's color
+	menu.setChildSize(item.getIntrinsicHeight()); // set absolout child size for menu
+
+	final int position = i;
+	menu.addItem(item, str[i], new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+		//You can access child click in here			
+		}
 	});
 }
 ```
