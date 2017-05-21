@@ -185,7 +185,7 @@ allprojects {
 Step 2. Add the dependency
 ```Groovy
 dependencies {
-	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.8.7'
+	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.9.1'
 	}
 ```
 ## Credits
