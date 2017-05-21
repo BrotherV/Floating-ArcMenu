@@ -122,6 +122,7 @@ public class ActivityFragment extends AppCompatActivity {
 			menu.setToolTipPadding(4f);
 			menu.setToolTipTextSize(14);
 			menu.setToolTipTextColor(Color.BLUE);
+			//menu.setIcon(R.mipmap.facebook_w, R.mipmap.github_w);
 			menu.setAnim(300,300, ArcMenu.ANIM_MIDDLE_TO_RIGHT, ArcMenu.ANIM_MIDDLE_TO_RIGHT,
 					ArcMenu.ANIM_INTERPOLATOR_ACCELERATE_DECLERATE, ArcMenu.ANIM_INTERPOLATOR_ACCELERATE_DECLERATE);
 

@@ -441,14 +441,7 @@ public class ArcMenu extends RelativeLayout {
 							bindItemAnimation(item, false, 200);
 						}
 					}
-					if(isMenuClicked){
-						isMenuClicked = false;
-						if(!isDoubleIconSet && !isOneIconSet){
-							ViewAnim.rotateAnimation(mIcon, false);
-						}else if(isDoubleIconSet && !isOneIconSet){
-							fabMenu.setIcon(iconClose, true);
-						}
-					}
+					retFirstStatus();
 					mArcLayout.invalidate();
 					mArcLayout.setExpandDone(false);
 					if (listener != null) {
@@ -459,6 +452,16 @@ public class ArcMenu extends RelativeLayout {
 		};
 	}
 
+	private void retFirstStatus(){
+		if(isMenuClicked){
+			isMenuClicked = false;
+			if(!isDoubleIconSet && !isOneIconSet){
+				ViewAnim.rotateAnimation(mIcon, false);
+			}else if(isDoubleIconSet && !isOneIconSet){
+				fabMenu.setIcon(iconClose, true);
+			}
+		}
+	}
 	/**
 	 *
 	 * @param child
@@ -825,6 +828,7 @@ public class ArcMenu extends RelativeLayout {
 	public void menuOut(){
 		if(mArcLayout.isExpanded()){
 			mArcLayout.switchState(true);
+			retFirstStatus();
 		}
 		this.startAnimation(menuTranslateOut);
 	}

@@ -23,7 +23,6 @@
         arc:menuChildAnim="false"
         arc:menuShadowElevation="true"
         arc:menuNormalColor="@color/colorAccent"
-        arc:menuImage="@mipmap/tools"
         android:layout_gravity="center_horizontal|right"
         android:layout_marginRight="6dp"
         android:layout_marginBottom="6dp"
