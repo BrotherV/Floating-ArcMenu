@@ -988,6 +988,16 @@ public class ArcLayout extends RelativeLayout {
 		textStructure.add(str);
 	}
 
+	public void changeTextSize(int index, int w, int h){
+		TextStructure str = new TextStructure();
+		str.h = h;
+		str.w = w;
+		if(textStructure.size() > index){
+			textStructure.remove(index);
+			textStructure.add(index, str);
+		}
+	}
+
 	public void setOnMenuItemOpenClose(OnMenuItemOpenClose l){
 		menuListener = l;
 	}

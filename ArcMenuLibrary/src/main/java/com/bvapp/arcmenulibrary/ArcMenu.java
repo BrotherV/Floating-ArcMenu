@@ -65,6 +65,8 @@ import com.bvapp.arcmenulibrary.widget.ArcLayout;
 import com.bvapp.arcmenulibrary.widget.FloatingActionButton;
 import com.bvapp.arcmenulibrary.widget.ObservableScrollView;
 
+import java.util.ArrayList;
+
 /**
  *
  */
@@ -345,7 +347,7 @@ public class ArcMenu extends RelativeLayout {
 	public void addItem(View item , String tootTip, OnClickListener listener) {
 		isChildDeclared = true;
 		mArcLayout.addView(item);
-		mArcLayout.addView(getContentView(tootTip));
+		mArcLayout.addView(getContentView(tootTip, true));
 		item.setOnClickListener(getItemClickListener(listener));
 	}
 
@@ -354,7 +356,7 @@ public class ArcMenu extends RelativeLayout {
 	 * @param str
 	 * @return
 	 */
-	private TextView getContentView(String str) {
+	private TextView getContentView(String str, boolean isSizeSet) {
 		GradientDrawable drawable = new GradientDrawable();
 		drawable.setColor(mBackgroundColor);
 		drawable.setCornerRadius(mCornerRadius);
@@ -387,17 +389,23 @@ public class ArcMenu extends RelativeLayout {
 		FrameLayout mContentView = new FrameLayout(mContext);
 		mContentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-		final int w = Util.getWidth(mContext, str, mTextSize == 0 ? 10:mTextSize,
-				Util.getDeviceWidth(),mTypeface,mPadding);
-		final int h = Util.getHeight(mContext, str, mTextSize == 0 ? 10:mTextSize,
-				Util.getDeviceWidth(),mTypeface,mPadding);
-
-		Log.i("Child measure", "Size Height: " + h + "   Size Width: " + w);
-		setArcLayoutTextSize(w, h);
+		if(isSizeSet){
+			int[] d = getTextSize(str);
+			Log.i("Child measure", "Size Height: " + d[0] + "   Size Width: " + d[1]);
+			setArcLayoutTextSize(d[0], d[1]);
+		}
 		//mContentView.addView(textView);
 		return textView;
 	}
 
+	private int[] getTextSize(String str){
+		int[] d = new int[2];
+		d[0] = Util.getWidth(mContext, str, mTextSize == 0 ? 10:mTextSize,
+				Util.getDeviceWidth(),mTypeface,mPadding);
+		d[1] = Util.getHeight(mContext, str, mTextSize == 0 ? 10:mTextSize,
+				Util.getDeviceWidth(),mTypeface,mPadding);
+		return d;
+	}
 	/**
 	 *
 	 * @param listener
@@ -787,6 +795,47 @@ public class ArcMenu extends RelativeLayout {
 	 */
 	public static float dpToPx(float dp) {
 		return dp * Resources.getSystem().getDisplayMetrics().density;
+	}
+
+	public void removeAllChild(){
+		if(mArcLayout != null && mArcLayout.getChildCount() > 0){
+			mArcLayout.removeAllViews();
+		}
+	}
+
+	public void removeChildAt(int index){
+		if(mArcLayout != null && mArcLayout.getChildCount() > 0){
+			int childCount = mArcLayout.getChildCount();
+			if(childCount % 2 == 0 && ((index *2) +1 ) <= childCount){
+				mArcLayout.removeViewAt(index * 2);
+				mArcLayout.removeViewAt(index * 2);
+			}
+		}
+	}
+
+	public void addChildAt(View view, String str, int index, OnClickListener listener){
+		addChildToArcLayout(view, str, index, listener , true);
+	}
+
+	public void replaceChildAt(View view, String str, int index, OnClickListener listener){
+		if(mArcLayout != null){
+			removeChildAt(index);
+			addChildToArcLayout(view, str, index, listener , false);
+			int[] d = getTextSize(str);
+			mArcLayout.changeTextSize(index, d[0], d[1]);
+		}
+	}
+
+	private void addChildToArcLayout(View view, String str, int index, OnClickListener listener, boolean setTextSize){
+		if(mArcLayout != null){
+			mArcLayout.addView(view, index * 2);
+			mArcLayout.addView(getContentView(str, setTextSize), (index * 2) + 1);
+			view.setOnClickListener(getItemClickListener(listener));
+		}
+	}
+
+	public boolean hasChid(){
+		return mArcLayout.getChildCount() > 0 ? true : false;
 	}
 
 	/**

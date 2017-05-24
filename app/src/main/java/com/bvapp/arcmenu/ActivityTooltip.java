@@ -15,7 +15,7 @@ public class ActivityTooltip extends AppCompatActivity {
 			R.mipmap.github_w };
 
 	private String[] str = {"Facebook","Flickr","Instagram","Github"};
-
+	private int position;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,10 +54,7 @@ public class ActivityTooltip extends AppCompatActivity {
 
 	private void initArcMenu(final ArcMenu menu, final String[] str, int[] itemDrawables, int count) {
 		for (int i = 0; i < count; i++) {
-			FloatingActionButton item = new FloatingActionButton(this);
-			item.setSize(FloatingActionButton.SIZE_MINI);
-			item.setIcon(itemDrawables[i]);
-			item.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+			FloatingActionButton item = getChildItem(itemDrawables[i]);
 			menu.setChildSize(item.getIntrinsicHeight());
 
 			final int position = i;
@@ -68,10 +65,26 @@ public class ActivityTooltip extends AppCompatActivity {
 					Toast.makeText(ActivityTooltip.this, str[position],
 							Toast.LENGTH_SHORT).show();
 					if(position == 1){
-						menu.menuOut();
+						menu.replaceChildAt(getChildItem(R.mipmap.github_w), "Github", 0, clickListener);
 					}
 				}
 			});
 		}
+	}
+
+	View.OnClickListener clickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			Toast.makeText(ActivityTooltip.this, "Github",
+					Toast.LENGTH_SHORT).show();
+		}
+	};
+
+	private FloatingActionButton getChildItem(int drawable){
+		FloatingActionButton item = new FloatingActionButton(this);
+		item.setSize(FloatingActionButton.SIZE_MINI);
+		item.setIcon(drawable);
+		item.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+		return item;
 	}
 }
