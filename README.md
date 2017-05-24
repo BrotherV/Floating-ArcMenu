@@ -89,7 +89,7 @@ for (int i = 0; i < itemCount; i++) {
 	});
 }
 ```
-### New Features in v1.0.8.7
+### New Features in v1.0.9.1
 
 In this version user will able to access OnClickListener and user can change menu icon programmatically. even user will able to add 2 Drawable icons, one for close form and one for open and menu automatically change the icons by order.
 ![Demo](art/double_icon.gif)
@@ -97,9 +97,6 @@ In this version user will able to access OnClickListener and user can change men
 arcMenu.setIcon(R.mipmap.facebook_w, R.mipmap.github_w); // by adding drawable file ,menu will able to change icons by order.
 arcMenu.setDefaultIcon(); // This method will disable up line and will set plus marker on the menu.
 ```
-
-### New Features in v1.0.8.2
-
 New plus marker added to menu, if user doesn't want to set icon for menu it will add plus marker automatically for menu.
 ![Image](art/img1.png)
 ![Image](art/img2.png)
@@ -188,7 +185,7 @@ allprojects {
 Step 2. Add the dependency
 ```Groovy
 dependencies {
-	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.8.7'
+	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.9.1'
 	}
 ```
 ## Credits
