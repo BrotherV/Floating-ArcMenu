@@ -97,7 +97,6 @@ arcMenu.removeAllChild(); // This method will remove all the children
 arcMenu.removeChildAt(int index); // This method will remove an specific child
 arcMenu.addChildAt(View view, String str, int index, OnClickListener listener); // This method can add a new child at the end 
 arcMenu.replaceChildAt(View view, String str, int index, OnClickListener listener); // With this method you will able to replace a child
-arcMenu.hasChid(); //It will return true if menu has child.
 arcMenu.setIcon(R.mipmap.facebook_w, R.mipmap.github_w); // by adding drawable file ,menu will able to change icons by order.
 arcMenu.setDefaultIcon(); // This method will disable up line and will set plus marker on the menu.
 ```
