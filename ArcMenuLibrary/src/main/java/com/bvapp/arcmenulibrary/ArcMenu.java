@@ -65,6 +65,8 @@ import com.bvapp.arcmenulibrary.widget.ArcLayout;
 import com.bvapp.arcmenulibrary.widget.FloatingActionButton;
 import com.bvapp.arcmenulibrary.widget.ObservableScrollView;
 
+import java.util.ArrayList;
+
 /**
  *
  */
@@ -832,7 +834,7 @@ public class ArcMenu extends RelativeLayout {
 		}
 	}
 
-	public boolean hasChild(){
+	public boolean hasChid(){
 		return mArcLayout.getChildCount() > 0 ? true : false;
 	}
 
