@@ -89,11 +89,14 @@ for (int i = 0; i < itemCount; i++) {
 	});
 }
 ```
-### New Features in v1.0.9.1
-
-In this version user will able to access OnClickListener and user can change menu icon programmatically. even user will able to add 2 Drawable icons, one for close form and one for open and menu automatically change the icons by order.
+### New Features in v1.0.9.3
+In this version user will able to add or delet or replace munu child or user can removeAllchild from the menu and initialize it again, also user will able to access OnClickListener and user can change menu icon programmatically. even user will able to add 2 Drawable icons, one for close form and one for open and menu automatically change the icons by order.
 ![Demo](art/double_icon.gif)
 ``` java
+arcMenu.removeAllChild(); // This method will remove all the children
+arcMenu.removeChildAt(int index); // This method will remove an specific child
+arcMenu.addChildAt(View view, String str, int index, OnClickListener listener); // This method can add a new child at the end 
+arcMenu.replaceChildAt(View view, String str, int index, OnClickListener listener); // With this method you will able to replace a child
 arcMenu.setIcon(R.mipmap.facebook_w, R.mipmap.github_w); // by adding drawable file ,menu will able to change icons by order.
 arcMenu.setDefaultIcon(); // This method will disable up line and will set plus marker on the menu.
 ```
@@ -185,7 +188,7 @@ allprojects {
 Step 2. Add the dependency
 ```Groovy
 dependencies {
-	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.9.1'
+	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.9.3'
 	}
 ```
 ## Credits
