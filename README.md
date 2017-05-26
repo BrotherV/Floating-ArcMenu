@@ -89,7 +89,7 @@ for (int i = 0; i < itemCount; i++) {
 	});
 }
 ```
-### New Features in v1.0.9.3
+### New Features in v1.0.9.2
 In this version user will able to add or delet or replace munu child or user can removeAllchild from the menu and initialize it again, also user will able to access OnClickListener and user can change menu icon programmatically. even user will able to add 2 Drawable icons, one for close form and one for open and menu automatically change the icons by order.
 ![Demo](art/double_icon.gif)
 ``` java
@@ -188,7 +188,7 @@ allprojects {
 Step 2. Add the dependency
 ```Groovy
 dependencies {
-	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.9.3'
+	        compile 'com.github.BrotherV:Floating-ArcMenu:1.0.9.2'
 	}
 ```
 ## Credits
