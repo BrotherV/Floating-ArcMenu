@@ -16,6 +16,7 @@ import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -326,8 +327,9 @@ public class FloatingActionButton extends View implements ThemeManager.OnThemeCh
      */
 	public void setIcon(@DrawableRes int resId){
 		try {
-			Bitmap b = new BitmapFactory().decodeResource(getResources(), resId);
-			Drawable mIcon = new BitmapDrawable(getResources(), b);
+			//Bitmap b = new BitmapFactory().decodeResource(getResources(), resId);
+			//Drawable mIcon = new BitmapDrawable(getResources(), b);
+			Drawable mIcon = ContextCompat.getDrawable(getContext(), resId);
 			setIcon(mIcon);
 		}catch (Exception e){
 			e.printStackTrace();
