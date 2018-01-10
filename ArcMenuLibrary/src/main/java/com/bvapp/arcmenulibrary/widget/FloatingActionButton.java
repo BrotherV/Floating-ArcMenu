@@ -16,6 +16,7 @@ import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -40,6 +41,7 @@ import com.bvapp.arcmenulibrary.util.Util;
  * Created by Mohsen on 2/21/2017.
  */
 
+@CoordinatorLayout.DefaultBehavior(MoveUpwardBehavior.class)
 public class FloatingActionButton extends View implements ThemeManager.OnThemeChangedListener {
 
 	public static final int SIZE_LARGE = Util.dpToPx(64);
@@ -307,8 +309,8 @@ public class FloatingActionButton extends View implements ThemeManager.OnThemeCh
 		return mBackground.getShadowSize();
 	}
 
-	public void setOnShrinkExpandClickListener(View view, OnClickListener listener){
-		Util.shrinkExpandAnimation(view, listener);
+	public void setOnShrinkExpandClickListener(OnClickListener listener){
+		Util.shrinkExpandAnimation(this, listener);
 	}
 	/**
 	 * Set the Icon size.

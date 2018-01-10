@@ -1,6 +1,8 @@
 package com.bvapp.arcmenu;
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,17 +26,20 @@ public class ActivityMultipleMenu extends AppCompatActivity {
 	private String[] str = {"Facebook","Twiiter","Flickr","Instagram","Skype","Github"};
 
 	private ArcMenu[] arcMenu = new ArcMenu[menuId.length];
+	private CoordinatorLayout coordinatorLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_multiple_menu);
 
+		coordinatorLayout = (CoordinatorLayout) findViewById(R.id.layMain);
 
 		for(int i=0; i<arcMenu.length; i++){
 			arcMenu[i] = (ArcMenu) findViewById(menuId[i]);
 			initArcMenu(arcMenu[i], str, ITEM_DRAWABLES, i);
 		}
+
 	}
 
 	private void initArcMenu(final ArcMenu menu, final String[] str, int[] itemDrawables, final int menuNum) {
@@ -60,6 +65,9 @@ public class ActivityMultipleMenu extends AppCompatActivity {
 				public void onClick(View v) {
 					Toast.makeText(ActivityMultipleMenu.this,  str[position],
 							Toast.LENGTH_SHORT).show();
+					Snackbar snackbar = Snackbar
+							.make(coordinatorLayout, "Hello this is " + str[position], Snackbar.LENGTH_LONG);
+					snackbar.show();
 				}
 			});
 		}

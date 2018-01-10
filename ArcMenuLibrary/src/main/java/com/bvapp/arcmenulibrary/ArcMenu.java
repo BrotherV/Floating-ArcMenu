@@ -31,6 +31,7 @@ import android.os.Build;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -64,11 +65,13 @@ import com.bvapp.arcmenulibrary.interfaces.ScrollDirectionListener;
 import com.bvapp.arcmenulibrary.util.Util;
 import com.bvapp.arcmenulibrary.widget.ArcLayout;
 import com.bvapp.arcmenulibrary.widget.FloatingActionButton;
+import com.bvapp.arcmenulibrary.widget.MoveUpwardBehavior;
 import com.bvapp.arcmenulibrary.widget.ObservableScrollView;
 
 /**
  *
  */
+@CoordinatorLayout.DefaultBehavior(MoveUpwardBehavior.class)
 public class ArcMenu extends RelativeLayout {
 
 	public enum ArcMenuDuration {

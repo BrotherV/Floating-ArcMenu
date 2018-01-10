@@ -2,6 +2,8 @@ package com.bvapp.arcmenu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +19,8 @@ public class ActivityMain extends AppCompatActivity {
 	private static final int Scroll_View_Fragment = 0x0F3;
 
 	AppCompatActivity currenActivity;
+
+	private CoordinatorLayout coordinatorLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +64,8 @@ public class ActivityMain extends AppCompatActivity {
 		btnRecycleView.setOnClickListener(click);
 		btnScrollView.setOnClickListener(click);
 
-		LinearLayout l = (LinearLayout) findViewById(R.id.layMain);
-		l.addView(getChildItem());
+		coordinatorLayout = (CoordinatorLayout) findViewById(R.id.layMain);
+		setChildItem();
 	}
 
 	private void openActivity(Class<?> cls, String key, int value){
@@ -75,8 +79,8 @@ public class ActivityMain extends AppCompatActivity {
 	}
 
 	boolean i;
-	private FloatingActionButton getChildItem(){
-		final FloatingActionButton item = new FloatingActionButton(this);
+	private void setChildItem(){
+		final FloatingActionButton item = (FloatingActionButton) findViewById(R.id.fab);
 		item.setSize(FloatingActionButton.SIZE_NORMAL);
 		item.setIcon(R.mipmap.facebook_w);
 		item.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -100,14 +104,16 @@ public class ActivityMain extends AppCompatActivity {
 		});
 		*/
 
-		item.setOnShrinkExpandClickListener(item, new View.OnClickListener() {
+		item.setOnShrinkExpandClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				item.setIconSize(i ? 32 : 16);
 				i = !i;
+				Snackbar snackbar = Snackbar
+						.make(coordinatorLayout, "Hello this is FAB", Snackbar.LENGTH_LONG);
+				snackbar.show();
 			}
 		});
-		return item;
 	}
 
 }
