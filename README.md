@@ -3,7 +3,8 @@
 [![](https://jitpack.io/v/BrotherV/Floating-ArcMenu.svg)](https://jitpack.io/#BrotherV/Floating-ArcMenu)
 # Floating-ArcMenu
 **A prety menu for all applications**
-### New Features in v1.0.9.8
+### New Features in v1.1.0.2
+* SnackBar move up/down event added to ArcMenu and FloatActionButton (by using CoordinatorLayout as parent)
 * Set FloatActionButton icon size programmatically
 * Change FloatActionButton icon size by changing FloatActionButton size
 * Set ArcMenu icon size programmatically
@@ -11,11 +12,14 @@
 
 ``` java
 FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-fab.setOnShrinkExpandClickListener(fab, new View.OnClickListener() {
+fab.setOnShrinkExpandClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				fab.setIconSize(i ? 32 : 16);  // set fab icon size 
 				i = !i;
+				Snackbar snackbar = Snackbar
+						.make(fab, "Hello this is FAB", Snackbar.LENGTH_LONG);
+				snackbar.show();
 			}
 		});
 ```
