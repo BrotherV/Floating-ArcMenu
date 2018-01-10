@@ -5,6 +5,7 @@
 **A prety menu for all applications**
 ### New Features in v1.0.9.8
 * Set FloatActionButton icon size programmatically
+* Change FloatActionButton icon size by changing FloatActionButton size
 * Set ArcMenu icon size programmatically
 * New "setOnShrinkExpandClickListener" for FloatActionButton which can add new animation to fab.
 
