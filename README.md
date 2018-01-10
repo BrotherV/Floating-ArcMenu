@@ -11,7 +11,7 @@
 
 ``` java
 FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-fab.setOnShrinkExpandClickListener(item, new View.OnClickListener() {
+fab.setOnShrinkExpandClickListener(fab, new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				fab.setIconSize(i ? 32 : 16);  // set fab icon size 
