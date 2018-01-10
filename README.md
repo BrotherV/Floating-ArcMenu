@@ -3,6 +3,22 @@
 [![](https://jitpack.io/v/BrotherV/Floating-ArcMenu.svg)](https://jitpack.io/#BrotherV/Floating-ArcMenu)
 # Floating-ArcMenu
 **A prety menu for all applications**
+### New Features in v1.0.9.8
+* Set FloatActionButton icon size programmatically
+* Set ArcMenu icon size programmatically
+* New "setOnShrinkExpandClickListener" for FloatActionButton which can add new animation to fab.
+
+``` java
+FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+fab.setOnShrinkExpandClickListener(item, new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				fab.setIconSize(i ? 32 : 16);  // set fab icon size 
+				i = !i;
+			}
+		});
+```
+
 
 Android floating arc menu which reacts on scrolling events. Becomes visible when an attached target is scrolled up and invisible when scrolled down.
 
@@ -89,8 +105,8 @@ for (int i = 0; i < itemCount; i++) {
 	});
 }
 ```
-### New Features in v1.0.9.5
-In this version user will able to add or delet or replace munu child or user can removeAllchild from the menu and initialize it again, also user will able to access OnClickListener and user can change menu icon programmatically. even user will able to add 2 Drawable icons, one for close form and one for open and menu automatically change the icons by order.
+### Another Features
+User will able to add or delet or replace munu child or user can removeAllchild from the menu and initialize it again, also user will able to access OnClickListener and user can change menu icon programmatically. even user will able to add 2 Drawable icons, one for close form and one for open and menu automatically change the icons by order.
 ![Demo](art/double_icon.gif)
 ``` java
 arcMenu.removeAllChild(); // This method will remove all the children
