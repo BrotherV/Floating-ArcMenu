@@ -7,8 +7,11 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.bvapp.arcmenulibrary.R;
@@ -149,5 +152,67 @@ public class Util {
 
 	public static int dpToSp(int dp) {
 		return (int) ((float) dpToPx(dp) / (float) spToPx(dp));
+	}
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public static Animation scaleAnimationRelativeToSelf(float xStart,
+	                                                     float xEnd, float yStart, float yEnd, float pivotX, float pivotY,
+	                                                     int durationMillis, boolean fill) {
+		Animation anim = new ScaleAnimation(xStart, xEnd, // Start and end
+				// values for
+				// the X axis scaling
+				yStart, yEnd, // Start and end values for the Y axis scaling
+				Animation.RELATIVE_TO_SELF, pivotX, // Pivot point of X scaling
+				Animation.RELATIVE_TO_SELF, pivotY); // Pivot point of Y scaling
+		anim.setDuration(durationMillis);
+		anim.setFillAfter(fill); // Needed to keep the result of the animation
+		return anim;
+	}
+
+	public static void shrinkExpandAnimation(final View myView, final View.OnClickListener listener) {
+		if(myView != null){
+			final Animation animClickIn = scaleAnimationRelativeToSelf(1.0f, 0.85f,
+					1.0f, 0.85f, 0.5f, 0.5f, 80,false);
+			final Animation animClickOut = scaleAnimationRelativeToSelf(0.85f, 1.0f,
+					0.85f, 1.0f, 0.5f, 0.5f, 80,false);
+
+			myView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					myView.startAnimation(animClickIn);
+				}
+			});
+
+			animClickIn.setAnimationListener(new Animation.AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					myView.startAnimation(animClickOut);
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {}
+			});
+
+			animClickOut.setAnimationListener(new Animation.AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					if (listener != null){
+						listener.onClick(myView);
+					}
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {}
+			});
+		}
 	}
 }

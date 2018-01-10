@@ -53,7 +53,7 @@ public class FloatingActionButton extends View implements ThemeManager.OnThemeCh
     private Interpolator mInterpolator;
     private SwitchIconAnimator mSwitchIconAnimator;
 	private int mIconSize = -1;
-		
+
 	private RippleManager mRippleManager;
     protected int mStyleId;
     protected int mCurrentStyle = ThemeManager.THEME_UNDEFINED;
@@ -225,16 +225,20 @@ public class FloatingActionButton extends View implements ThemeManager.OnThemeCh
      * @param radius The radius in pixel.
      */
 	public void setRadius(int radius){
-		if(mBackground.setRadius(radius))
+		if(mBackground.setRadius(radius)){
+			mIconSize = radius;
 			requestLayout();
+		}
 	}
     /**
      * Set radius of the button.
      * @param size The size in dp.
      */
 	public void setSize(int size){
-		if(mBackground.setRadius(size/2))
+		if(mBackground.setRadius(size/2)){
+			mIconSize = size/2;
 			requestLayout();
+		}
 	}
 	
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -303,6 +307,19 @@ public class FloatingActionButton extends View implements ThemeManager.OnThemeCh
 		return mBackground.getShadowSize();
 	}
 
+	public void setOnShrinkExpandClickListener(View view, OnClickListener listener){
+		Util.shrinkExpandAnimation(view, listener);
+	}
+	/**
+	 * Set the Icon size.
+	 * @param size Define icon size by dp.
+	 */
+	public void setIconSize(int size){
+		if((size/2 < (mBackground.getRadius() * 4/5)) && size/2 > (mBackground.getRadius() * 1/5)){
+			mIconSize = size;
+			invalidateIcon();
+		}
+	}
     /**
      * Set the drawable that is used as this button's icon.
      * @param icon The drawable.
@@ -348,12 +365,17 @@ public class FloatingActionButton extends View implements ThemeManager.OnThemeCh
 			mIcon.setCallback(null);
 			unscheduleDrawable(mIcon);
 		}
-
 		mIcon = icon;
+		invalidateIcon();
+	}
+
+	private void invalidateIcon(){
 		float half = mIconSize / 2f;
-		mIcon.setBounds((int)(mBackground.getCenterX() - half), (int)(mBackground.getCenterY() - half), (int)(mBackground.getCenterX() + half), (int)(mBackground.getCenterY() + half));
-		mIcon.setCallback(this);
-		invalidate();
+		if(mIcon != null){
+			mIcon.setBounds((int)(mBackground.getCenterX() - half), (int)(mBackground.getCenterY() - half), (int)(mBackground.getCenterX() + half), (int)(mBackground.getCenterY() + half));
+			mIcon.setCallback(this);
+			invalidate();
+		}
 	}
 
 	public void setBackgroundColor(ColorStateList color){

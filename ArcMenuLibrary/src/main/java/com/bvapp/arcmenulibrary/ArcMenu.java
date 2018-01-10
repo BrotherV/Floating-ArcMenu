@@ -31,6 +31,7 @@ import android.os.Build;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -64,8 +65,6 @@ import com.bvapp.arcmenulibrary.util.Util;
 import com.bvapp.arcmenulibrary.widget.ArcLayout;
 import com.bvapp.arcmenulibrary.widget.FloatingActionButton;
 import com.bvapp.arcmenulibrary.widget.ObservableScrollView;
-
-import java.util.ArrayList;
 
 /**
  *
@@ -156,14 +155,8 @@ public class ArcMenu extends RelativeLayout {
 	private boolean isShadow;
 	private boolean isMenuIn = true;
 	private boolean isMenuOut;
-	private boolean isChildDeclared;
 	private boolean isMenuClicked;
 
-
-	private Animation menuClickIn =
-			AnimationObject.scaleAnimationRelativeToSelf(1.0f,0.8f,1.0f,0.8f,0.5f,0.5f,100,false);
-	private Animation menuClickOut =
-			AnimationObject.scaleAnimationRelativeToSelf(0.8f,1.0f,0.8f,1.0f,0.5f,0.5f,100,false);
 
 	private Animation menuTranslateIn;
 	private Animation menuTranslateOut;
@@ -345,7 +338,6 @@ public class ArcMenu extends RelativeLayout {
 	 * @param listener
 	 */
 	public void addItem(View item , String tootTip, OnClickListener listener) {
-		isChildDeclared = true;
 		mArcLayout.addView(item);
 		mArcLayout.addView(getContentView(tootTip, true));
 		item.setOnClickListener(getItemClickListener(listener));
@@ -479,7 +471,7 @@ public class ArcMenu extends RelativeLayout {
 	 */
 	private Animation bindItemAnimation(final View child,
 	                                    final boolean isClicked, final long duration) {
-		Animation animation = createItemDisapperAnimation(duration, isClicked);
+		Animation animation = createItemDisappearAnimation(duration, isClicked);
 		child.setAnimation(animation);
 
 		return animation;
@@ -504,8 +496,8 @@ public class ArcMenu extends RelativeLayout {
 	 * @param isClicked
 	 * @return
 	 */
-	private static Animation createItemDisapperAnimation(final long duration,
-	                                                     final boolean isClicked) {
+	private static Animation createItemDisappearAnimation(final long duration,
+	                                                      final boolean isClicked) {
 		AnimationSet animationSet = new AnimationSet(true);
 		animationSet.addAnimation(new ScaleAnimation(1.0f, isClicked ? 1.4f
 				: 0.0f, 1.0f, isClicked ? 1.4f : 0.0f,
@@ -689,12 +681,21 @@ public class ArcMenu extends RelativeLayout {
 		mIcon.setVisibility(VISIBLE);
 	}
 
+	public void setIconSize(int size){
+		fabMenu.setIconSize(size);
+	}
+
 	public void setIcon(@DrawableRes int iconClose, @DrawableRes int iconOpen) {
 		try{
+			/*
 			Bitmap b = new BitmapFactory().decodeResource(getResources(), iconClose);
 			Drawable c1 = new BitmapDrawable(getResources(), b);
 			b = new BitmapFactory().decodeResource(getResources(), iconOpen);
 			Drawable c2 = new BitmapDrawable(getResources(), b);
+			*/
+
+			Drawable c1 = ContextCompat.getDrawable(getContext(), iconClose);
+			Drawable c2 = ContextCompat.getDrawable(getContext(), iconOpen);
 			setIcon(c1, c2);
 		}catch (Exception e){
 			e.printStackTrace();
@@ -713,10 +714,13 @@ public class ArcMenu extends RelativeLayout {
 		}
 	}
 
-	public void setIcon(@DrawableRes int iconClose) {
+	public void setIcon(@DrawableRes int icon) {
 		try{
+			/*
 			Bitmap b = new BitmapFactory().decodeResource(getResources(), iconClose);
 			Drawable c = new BitmapDrawable(getResources(), b);
+			*/
+			Drawable c = ContextCompat.getDrawable(getContext(), icon);
 			setIcon(c);
 		}catch (Exception e){
 			e.printStackTrace();

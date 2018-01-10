@@ -3,8 +3,12 @@ package com.bvapp.arcmenu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+
+import com.bvapp.arcmenulibrary.widget.FloatingActionButton;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -55,6 +59,9 @@ public class ActivityMain extends AppCompatActivity {
 		btnListView.setOnClickListener(click);
 		btnRecycleView.setOnClickListener(click);
 		btnScrollView.setOnClickListener(click);
+
+		LinearLayout l = (LinearLayout) findViewById(R.id.layMain);
+		l.addView(getChildItem());
 	}
 
 	private void openActivity(Class<?> cls, String key, int value){
@@ -65,6 +72,42 @@ public class ActivityMain extends AppCompatActivity {
 			}
 			currenActivity.startActivity(intent);
 		}
+	}
+
+	boolean i;
+	private FloatingActionButton getChildItem(){
+		final FloatingActionButton item = new FloatingActionButton(this);
+		item.setSize(FloatingActionButton.SIZE_NORMAL);
+		item.setIcon(R.mipmap.facebook_w);
+		item.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+		item.setIconSize(16);
+		/*
+		item.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				switch (event.getAction()){
+					case MotionEvent.ACTION_DOWN:
+						item.setSize(FloatingActionButton.SIZE_MINI);
+						//item.setIconSize(32);
+						break;
+					case MotionEvent.ACTION_UP:
+						item.setSize(FloatingActionButton.SIZE_NORMAL);
+						//item.setIconSize(16);
+						break;
+				}
+				return false;
+			}
+		});
+		*/
+
+		item.setOnShrinkExpandClickListener(item, new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				item.setIconSize(i ? 32 : 16);
+				i = !i;
+			}
+		});
+		return item;
 	}
 
 }
