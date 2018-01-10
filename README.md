@@ -37,8 +37,10 @@ The width and height of the floating arc menu are hardcoded to **64dp** for the 
 for the mini menu button.
 
 ```xml
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout 
+	     xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:arc="http://schemas.android.com/apk/res-auto"
+	     android:id="@+id/layMain"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
@@ -62,9 +64,8 @@ for the mini menu button.
         arc:menuNormalColor="@color/colorAccent"
         arc:menuImage="@mipmap/tools"
         android:layout_gravity="center_horizontal|right"
-        >
-    </com.bvapp.arcmenulibrary.ArcMenu>
-</FrameLayout>
+        />
+</android.support.design.widget.CoordinatorLayout>
 ```
 **2)** Add java code in activity or fragment
 ``` java
