@@ -111,7 +111,8 @@ for (int i = 0; i < itemCount; i++) {
 	});
 }
 ```
-### Another Features
+
+### New Features in v1.0.9.5
 User will able to add or delet or replace munu child or user can removeAllchild from the menu and initialize it again, also user will able to access OnClickListener and user can change menu icon programmatically. even user will able to add 2 Drawable icons, one for close form and one for open and menu automatically change the icons by order.
 ![Demo](art/double_icon.gif)
 ``` java
@@ -122,6 +123,8 @@ arcMenu.replaceChildAt(View view, String str, int index, OnClickListener listene
 arcMenu.setIcon(R.mipmap.facebook_w, R.mipmap.github_w); // by adding drawable file ,menu will able to change icons by order.
 arcMenu.setDefaultIcon(); // This method will disable up line and will set plus marker on the menu.
 ```
+
+### New Features in v1.0.9.2
 New plus marker added to menu, if user doesn't want to set icon for menu it will add plus marker automatically for menu.
 ![Image](art/img1.png)
 ![Image](art/img2.png)
@@ -130,7 +133,6 @@ New plus marker added to menu, if user doesn't want to set icon for menu it will
 ### New methods:
 
 ``` java
-
 ArcMenu arcMenu = (ArcMenu) findViewById(R.id.arcMenuX);
 arcMenu.setToolTipTextSize(14);  // This method will set tooltip text size
 arcMenu.setMinRadius(104);  //This method will change child radius programmatically
