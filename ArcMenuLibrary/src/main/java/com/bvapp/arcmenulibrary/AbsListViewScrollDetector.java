@@ -16,9 +16,10 @@
 
 package com.bvapp.arcmenulibrary;
 
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.AbsListView;
+
+import androidx.annotation.NonNull;
 
 abstract class AbsListViewScrollDetector implements AbsListView.OnScrollListener {
 

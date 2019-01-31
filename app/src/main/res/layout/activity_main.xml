@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:arc="http://schemas.android.com/apk/res-auto"
                                                  android:id="@+id/layMain"
                                                  android:layout_width="fill_parent"
@@ -58,5 +58,5 @@
         android:layout_gravity="bottom|left"
         android:layout_margin="16dp"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 

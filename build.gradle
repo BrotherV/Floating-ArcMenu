@@ -3,9 +3,10 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:3.3.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -15,6 +16,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
+        google()
     }
 }
 
@@ -24,18 +26,19 @@ task clean(type: Delete) {
 
 ext {
     //Version
-    supportLibrary = '25.0.1'
-    compileSdkVersion = 25
-    buildToolsVersion = "25.0.1"
-    minSdkVersion = 10
-    targetSdkVersion = 24
+    supportLibrary = '1.0.0-alpha4'
+    supportLibrary2 = '1.0.0-alpha1'
+    compileSdkVersion = 28
+    buildToolsVersion = "28.0.3"
+    minSdkVersion = 16
+    targetSdkVersion = 28
 
     junitVersion = "4.12"
 
     //Support Libraries dependencies
     supportDependencies = [
-            design           :         "com.android.support:design:${supportLibrary}",
-            appCompat        :         "com.android.support:appcompat-v7:${supportLibrary}",
-            recycle        :         "com.android.support:recyclerview-v7:${supportLibrary}",
+            design           : "com.google.android.material:material:${supportLibrary2}",
+            appCompat        : "androidx.appcompat:appcompat:${supportLibrary2}",
+            recycle        :         "androidx.recyclerview:recyclerview:${supportLibrary}",
     ]
 }

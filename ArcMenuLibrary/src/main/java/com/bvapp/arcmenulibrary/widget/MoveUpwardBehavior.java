@@ -1,9 +1,12 @@
 package com.bvapp.arcmenulibrary.widget;
 
 import android.os.Build;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
+
 import android.view.View;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 /**
  * Created by Mohsen on 1/3/2018.
