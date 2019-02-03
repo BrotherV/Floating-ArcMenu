@@ -175,7 +175,7 @@ public class FloatingActionButton extends View implements ThemeManager.OnThemeCh
         if(iconLineMorphing != 0)
             setIcon(new LineMorphingDrawable.Builder(context, iconLineMorphing).build(), false);
         else if(iconSrc != 0)
-            setIcon(context.getResources().getDrawable(iconSrc), false);
+            setIcon(ContextCompat.getDrawable(context, iconSrc), false);//setIcon(context.getResources().getDrawable(iconSrc), false);
 
         getRippleManager().onCreate(this, context, attrs, defStyleAttr, defStyleRes);
         Drawable background = getBackground();
