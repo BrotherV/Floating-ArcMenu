@@ -20,20 +20,20 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -69,12 +69,19 @@ import com.bvapp.arcmenulibrary.widget.MoveUpwardBehavior;
 import com.bvapp.arcmenulibrary.widget.ObservableScrollView;
 
 /**
- *
+ deprecated @CoordinatorLayout.DefaultBehavior(MoveUpwardBehavior.class)
+ so changed into implementation of AttachedBehavior
  */
-@CoordinatorLayout.DefaultBehavior(MoveUpwardBehavior.class)
-public class ArcMenu extends RelativeLayout {
+public class ArcMenu extends RelativeLayout
+        implements CoordinatorLayout.AttachedBehavior {
 
-	public enum ArcMenuDuration {
+    @NonNull
+    @Override
+    public CoordinatorLayout.Behavior getBehavior() {
+        return new MoveUpwardBehavior();
+    }
+
+    public enum ArcMenuDuration {
 		LENGTH_SHORT(300), LENGTH_LONG(500);
 
 		private int duration;
@@ -177,6 +184,7 @@ public class ArcMenu extends RelativeLayout {
 	private boolean isOneIconSet;
 
 	private OnClickListener clickListener;
+
 	/**
 	 *
 	 * @param context
@@ -214,37 +222,44 @@ public class ArcMenu extends RelativeLayout {
 		mIcon = (ImageView) findViewById(R.id.imgPlusIcon);
 		fabMenu = (FloatingActionButton) findViewById(R.id.fabArcMenu);
 
-		fabMenu.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if(menuAnim && mArcLayout.isAnimDone()){
-					if(clickListener != null){
-						clickListener.onClick(fabMenu);
-					}
-					ViewAnim.shrinkExpandAnimation(fabMenu);
-
-					if(isMenuClicked){
-						isMenuClicked = false;
-						if(!isDoubleIconSet && !isOneIconSet){
-							ViewAnim.rotateAnimation(mIcon, false);
-						}else if(isDoubleIconSet && !isOneIconSet){
-							fabMenu.setIcon(iconClose, true);
-						}
-					}else{
-						isMenuClicked = true;
-						if(!isDoubleIconSet && !isOneIconSet){
-							ViewAnim.rotateAnimation(mIcon, true);
-						}else if(isDoubleIconSet && !isOneIconSet){
-							fabMenu.setIcon(iconOpen, true);
-						}
-					}
-				}
-				if(mArcLayout.isAnimDone()){
-					mArcLayout.switchState(true);
-				}
-			}
-		});
+        fabMenu.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuOnclickMethod();
+            }
+        });
 	}
+
+    /**
+     * Main menu button onClick method
+     */
+	private void menuOnclickMethod(){
+        if(menuAnim && mArcLayout.isAnimDone()){
+            if(clickListener != null){
+                clickListener.onClick(fabMenu);
+            }
+            ViewAnim.shrinkExpandAnimation(fabMenu);
+
+            if(isMenuClicked){
+                isMenuClicked = false;
+                if(!isDoubleIconSet && !isOneIconSet){
+                    ViewAnim.rotateAnimation(mIcon, false);
+                }else if(isDoubleIconSet && !isOneIconSet){
+                    fabMenu.setIcon(iconClose, true);
+                }
+            }else{
+                isMenuClicked = true;
+                if(!isDoubleIconSet && !isOneIconSet){
+                    ViewAnim.rotateAnimation(mIcon, true);
+                }else if(isDoubleIconSet && !isOneIconSet){
+                    fabMenu.setIcon(iconOpen, true);
+                }
+            }
+        }
+        if(mArcLayout.isAnimDone()){
+            mArcLayout.switchState(true);
+        }
+    }
 
 	/**
 	 *
@@ -628,7 +643,7 @@ public class ArcMenu extends RelativeLayout {
 	 */
 	@Override
 	public boolean performClick() {
-		mArcLayout.switchState(!mArcLayout.isExpanded());
+        menuOnclickMethod();//mArcLayout.switchState(!mArcLayout.isExpanded());
 		return mArcLayout.isExpanded();
 	}
 
@@ -750,7 +765,7 @@ public class ArcMenu extends RelativeLayout {
 	}
 
 	public int getColor(@ColorRes int res) {
-		return getResources().getColor(res);
+        return ResourcesCompat.getColor(getResources(), res, null);//return getResources().getColor(res);
 	}
 
 

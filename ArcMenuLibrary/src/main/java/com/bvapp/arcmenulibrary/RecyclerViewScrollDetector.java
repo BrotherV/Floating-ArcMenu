@@ -16,7 +16,8 @@
 
 package com.bvapp.arcmenulibrary;
 
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 abstract class RecyclerViewScrollDetector extends RecyclerView.OnScrollListener {
 	private int mScrollThreshold;

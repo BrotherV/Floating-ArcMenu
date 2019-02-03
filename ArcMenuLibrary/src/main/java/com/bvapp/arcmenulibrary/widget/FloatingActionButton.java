@@ -5,19 +5,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.content.ContextCompat;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -177,7 +175,7 @@ public class FloatingActionButton extends View implements ThemeManager.OnThemeCh
         if(iconLineMorphing != 0)
             setIcon(new LineMorphingDrawable.Builder(context, iconLineMorphing).build(), false);
         else if(iconSrc != 0)
-            setIcon(context.getResources().getDrawable(iconSrc), false);
+            setIcon(ContextCompat.getDrawable(context, iconSrc), false);//setIcon(context.getResources().getDrawable(iconSrc), false);
 
         getRippleManager().onCreate(this, context, attrs, defStyleAttr, defStyleRes);
         Drawable background = getBackground();

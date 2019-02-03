@@ -24,7 +24,7 @@ android {
         versionCode VERSION_CODE as int
         versionName VERSION_NAME as String
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
@@ -36,11 +36,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile supportDependencies.appCompat
-    compile supportDependencies.design
-    testCompile 'junit:junit:4.12'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01' //implementation supportDependencies.appCompat
+    implementation "com.google.android.material:material:1.1.0-alpha02" //implementation supportDependencies.design
+    testImplementation 'junit:junit:4.12'
 }

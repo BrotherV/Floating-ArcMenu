@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.bvapp.arcmenulibrary.R;
 
+import androidx.core.content.res.ResourcesCompat;
+
 /**
  * Created by Mohsen on 3/6/2017.
  */
@@ -127,7 +129,7 @@ public class Util {
 				if (value.type >= TypedValue.TYPE_FIRST_INT && value.type <= TypedValue.TYPE_LAST_INT)
 					return value.data;
 				else if (value.type == TypedValue.TYPE_STRING)
-					return context.getResources().getColor(value.resourceId);
+					return ResourcesCompat.getColor(context.getResources(), value.resourceId, null);//return context.getResources().getColor(value.resourceId);
 			}
 		}
 		catch(Exception ex){}
